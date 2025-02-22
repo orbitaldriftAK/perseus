@@ -112,10 +112,18 @@
                 }
             }
 
-            window.onload = loadTableData;
+            function disableTab(event) {
+                if (event.key === "Tab") {
+                    event.preventDefault();
+                }
+            }
+
+            window.onload = () => {
+                loadTableData();
+                document.addEventListener("keydown", disableTab);
+            };
         </script>
     </table>
 </body>
 </html>
-
 
