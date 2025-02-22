@@ -9,6 +9,15 @@
         th, td { border: 1px solid black; padding: 8px; text-align: center; }
         input { width: 100%; border: none; text-align: center; }
         input:focus { outline: none; }
+        /* Remove increment/decrement arrows from number inputs */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +77,8 @@
                     if (roomType !== "ST2Q" && roomType !== "ST1K") {
                         alert("Invalid room type");
                         roomTypeField.value = "";
+                    } else {
+                        roomTypeField.value = roomType;
                     }
                 }
             }
@@ -145,6 +156,16 @@
                         document.getElementById(`guest${index + 1}`).focus();
                     } else {
                         document.getElementById(`${nextFieldId}${index}`).focus();
+                    }
+                    // Auto-capitalize the first letter of each part of the Guest Name field
+                    if (event.target.id.startsWith("guest")) {
+                        let nameParts = event.target.value.split(" ");
+                        for (let i = 0; i < nameParts.length; i++) {
+                            if(nameParts[i].length > 0){
+                                nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
+                            }
+                        }
+                        event.target.value = nameParts.join(" ");
                     }
                 }
             }
