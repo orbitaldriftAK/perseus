@@ -1,102 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservation Screen</title>
+    <title>Room Reservation</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #C0C0C0;
-            padding: 20px;
-        }
-        .container {
-            width: 800px;
-            background-color: #F5F5F5;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-        }
-        .header {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .form-group {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .form-group label {
-            width: 30%;
-        }
-        .form-group input {
-            width: 65%;
-            padding: 5px;
-            border: 1px solid #888;
-            border-radius: 3px;
-        }
-        .buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .buttons button {
-            padding: 10px 15px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .buttons button:hover {
-            background-color: #0056b3;
-        }
+        body { font-family: Arial, sans-serif; }
+        .container { width: 60%; margin: auto; padding: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 5px; }
+        .buttons { margin-top: 20px; }
+        button { padding: 10px; margin-right: 10px; }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById("guestName").value = params.get("guest") || "";
+            document.getElementById("roomType").value = params.get("roomType") || "";
+        });function goBack() {
+        window.location.href = "index.html";
+    }
+
+    function cancelReservation() {
+        document.getElementById("guestName").value = "";
+        document.getElementById("roomType").value = "";
+    }
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "F4") {
+            event.preventDefault();
+            goBack();
+        }
+    });
+</script>
+
 </head>
 <body>
-
-<div class="container">
-    <div class="header">Guest Reservation</div>
-
-    <div class="form-group">
-        <label>Reservation #:</label>
-        <input type="text" value="43926" disabled>
-    </div>
-    <div class="form-group">
-        <label>Guest Name:</label>
-        <input type="text" placeholder="Enter Guest Name">
-    </div>
-    <div class="form-group">
-        <label>Arrival:</label>
-        <input type="date">
-    </div>
-    <div class="form-group">
-        <label>Number of Nights:</label>
-        <input type="number" min="1" value="1">
-    </div>
-    <div class="form-group">
-        <label>Departure:</label>
-        <input type="date">
-    </div>
-    <div class="form-group">
-        <label>Room Type:</label>
-        <input type="text" placeholder="ST2Q / ST1K">
-    </div>
-    <div class="form-group">
-        <label>Rate:</label>
-        <input type="text" placeholder="Enter Rate">
-    </div>
-    <div class="form-group">
-        <label>Balance:</label>
-        <input type="text" value="406.25" disabled>
-    </div>
-
+    <div class="container">
+        <h2>Room Reservation</h2>
+        <label for="guestName">Guest Name:</label>
+        <input type="text" id="guestName" readonly><label for="roomType">Room Type:</label>
+    <input type="text" id="roomType" readonly>
+    
     <div class="buttons">
-        <button onclick="window.location.href='index.html'">Back to Rooming List</button>
-        <button>More</button>
-        <button>Checkout</button>
+        <button onclick="goBack()">More</button>
+        <button onclick="cancelReservation()">Cancel</button>
     </div>
 </div>
 
