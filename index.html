@@ -26,12 +26,12 @@
         <script>
             function createRow(index) {
                 return `<tr>
-                    <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this)"></td>
-                    <td><input type="date" id="checkin${index}"></td>
-                    <td><input type="date" id="checkout${index}" onblur="validateDates(${index})"></td>
-                    <td><input type="number" id="adults${index}" min="0" max="6" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                    <td><input type="number" id="children${index}" min="0" max="6" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                    <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index})"></td>
+                   <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this); navigateOnEnter(event, ${index}, 'checkin')"></td>
+                   <td><input type="date" id="checkin${index}" onkeydown="navigateOnEnter(event, ${index}, 'checkout')"></td>
+                   <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="navigateOnEnter(event, ${index}, 'adults')"></td>
+                   <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="navigateOnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
+                    <td><input type="number" id="children${index}" min="0" max="6" onkeydown="navigateOnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
+                    <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); navigateOnEnter(event, ${index}, 'guest')"></td>
                     <td>RES</td>
                 </tr>`;
             }
@@ -122,7 +122,17 @@
                 loadTableData();
                 document.addEventListener("keydown", disableTab);
             };
-        </script>
+        function navigateOnEnter(event, index, nextFieldId) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        let nextIndex = index + 1;
+        if (nextFieldId === "roomType" && nextIndex <= 10) {
+            document.getElementById(`guest${nextIndex}`).focus();
+        } else {
+            document.getElementById(`${nextFieldId}${index}`).focus();
+        }
+    }
+}</script>
     </table>
 </body>
 </html>
