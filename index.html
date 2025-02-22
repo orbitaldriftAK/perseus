@@ -30,9 +30,9 @@
                    <td><input type="date" id="checkin${index}" onkeydown="OnEnter(event, ${index}, 'checkout')"></td>
                    <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="OnEnter(event, ${index}, 'adults')"></td>
                    <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                    <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                    <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
-                    <td>RES</td>
+                   <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
+                   <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
+                   <td>RES</td>
                 </tr>`;
             }
             document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) + createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10));
@@ -77,7 +77,20 @@
                     event.preventDefault();
                     let guestName = input.value.trim();
                     if (guestName !== "") {
-                        localStorage.setItem("savedData", JSON.stringify(getTableData()));
+                        let rowIndex = input.id.replace("guest", "");
+                        let checkin = document.getElementById(`checkin${rowIndex}`).value;
+                        let checkout = document.getElementById(`checkout${rowIndex}`).value;
+                        let roomType = document.getElementById(`roomType${rowIndex}`).value;
+                        let adultCount = document.getElementById(`adults${rowIndex}`).value;
+                        let childCount = document.getElementById(`children${rowIndex}`).value;
+                        
+                        sessionStorage.setItem('guestName', guestName);
+                        sessionStorage.setItem('checkin', checkin);
+                        sessionStorage.setItem('checkout', checkout);
+                        sessionStorage.setItem('roomType', roomType);
+                        sessionStorage.setItem('adultCount', adultCount);
+                        sessionStorage.setItem('childCount', childCount);
+
                         window.location.href = "reservation.html";
                     }
                 }
