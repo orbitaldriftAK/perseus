@@ -4,158 +4,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rooming List</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        table {
-            border-collapse: collapse;
-            width: 800px;
-            background: white;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            border: none;
-            outline: none;
-            text-align: center;
-        }
-        .small-input {
-            width: 30px;
-        }
-        #reservationScreen {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 300px;
-            background: white;
-            padding: 20px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-            text-align: center;
-        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 8px; text-align: center; }
+        input { width: 100%; border: none; text-align: center; }
+        input:focus { outline: none; }
     </style>
 </head>
-<body onload="setInitialFocus()"><table>
-    <thead>
+<body>
+    <h2>Rooming List</h2>
+    <table>
         <tr>
             <th>Guest Name</th>
+            <th>Check-in Date</th>
+            <th>Check-out Date</th>
             <th>#A</th>
             <th>#C</th>
-            <th>Check-in</th>
-            <th>Check-out</th>
             <th>Room Type</th>
             <th>Reservation Status</th>
         </tr>
-    </thead>
-    <tbody>
         <script>
-            for (let i = 0; i < 10; i++) {
-                document.write(`
-                    <tr>
-                        <td><input type="text" class="guest-name"></td>
-                        <td><input type="number" class="small-input adults" min="0"></td>
-                        <td><input type="number" class="small-input children" min="0"></td>
-                        <td><input type="date" class="checkin"></td>
-                        <td><input type="date" class="checkout"></td>
-                        <td><input type="text" class="room-type"></td>
-                        <td><input type="text" value="RES" readonly></td>
-                    </tr>
-                `);
+            function createRow(index) {
+                return `<tr>
+                    <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this)"></td>
+                    <td><input type="date" id="checkin${index}"></td>
+                    <td><input type="date" id="checkout${index}" onblur="validateDates(${index})"></td>
+                    <td><input type="number" id="adults${index}" min="0" max="6" oninput="validateOccupancy(${index})" style="width:40px"></td>
+                    <td><input type="number" id="children${index}" min="0" max="6" oninput="validateOccupancy(${index})" style="width:40px"></td>
+                    <td><input type="text" id="roomType${index}" onkeydown="checkRoomType(event, ${index})"></td>
+                    <td>RES</td>
+                </tr>`;
             }
-        </script>
-    </tbody>
-</table><div id="reservationScreen">
-    <h2>Room Reservation Screen</h2>
-    <p>Reservation details go here...</p>
-    <button onclick="closeReservationScreen()">Close (F4)</button>
-</div><script>
-    function setInitialFocus() {
-        document.querySelector('.guest-name').focus();
-    }
-
-    document.addEventListener('keydown', function(event) {
-        let inputs = Array.from(document.querySelectorAll("input"));
-        let index = inputs.indexOf(document.activeElement);
-        
-        if (event.key === "Enter") {
-            event.preventDefault();
-            if (index >= 0 && index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
-        }
-
-        if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-            event.preventDefault();
-            if (index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
-        }
-
-        if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-            event.preventDefault();
-            if (index > 0) {
-                inputs[index - 1].focus();
-            }
-        }
-
-        if (event.key === "F5" && document.activeElement.classList.contains("guest-name")) {
-            event.preventDefault();
-            document.getElementById("reservationScreen").style.display = "block";
-        }
-        
-        if (event.key === "F4") {
-            event.preventDefault();
-            closeReservationScreen();
-        }
-    });
-
-    document.addEventListener('input', function(event) {
-        if (event.target.classList.contains("adults") || event.target.classList.contains("children")) {
-            let row = event.target.closest("tr");
-            let adults = parseInt(row.querySelector(".adults").value) || 0;
-            let children = parseInt(row.querySelector(".children").value) || 0;
-            
-            if (adults + children > 6) {
-                alert("Max occupancy exceeded");
-                row.querySelector(".adults").value = "";
-                row.querySelector(".children").value = "";
-            }
-        }
-        
-        if (event.target.classList.contains("checkout")) {
-            let row = event.target.closest("tr");
-            let checkin = row.querySelector(".checkin").value;
-            let checkout = row.querySelector(".checkout").value;
-            
+            document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) + createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10));function validateDates(index) {
+            let checkin = document.getElementById(`checkin${index}`).value;
+            let checkout = document.getElementById(`checkout${index}`).value;
             if (checkin && checkout && checkin === checkout) {
                 alert("Departure must be different than arrival");
-                row.querySelector(".checkout").value = "";
+                document.getElementById(`checkout${index}`).value = "";
             }
         }
         
-        if (event.target.classList.contains("room-type")) {
-            let validRoomTypes = ["ST2Q", "ST1K"];
-            if (!validRoomTypes.includes(event.target.value)) {
-                alert("Invalid room type");
-                event.target.value = "";
+        function validateOccupancy(index) {
+            let adults = parseInt(document.getElementById(`adults${index}`).value) || 0;
+            let children = parseInt(document.getElementById(`children${index}`).value) || 0;
+            if (adults + children > 6) {
+                alert("Max occupancy exceeded");
+                document.getElementById(`adults${index}`).value = "";
+                document.getElementById(`children${index}`).value = "";
             }
         }
-    });
+        
+        function checkRoomType(event, index) {
+            if (event.key === "Enter") {
+                let roomType = document.getElementById(`roomType${index}`).value.toUpperCase();
+                if (roomType !== "ST2Q" && roomType !== "ST1K") {
+                    alert("Invalid room type");
+                    document.getElementById(`roomType${index}`).value = "";
+                }
+            }
+        }
+        
+        function checkF5(event, input) {
+            if (event.key === "F5") {
+                event.preventDefault();
+                localStorage.setItem("savedData", JSON.stringify(getTableData()));
+                window.location.href = "reservation_screen.html";
+            }
+        }
+        
+        function getTableData() {
+            let data = [];
+            for (let i = 1; i <= 10; i++) {
+                data.push({
+                    guest: document.getElementById(`guest${i}`).value,
+                    checkin: document.getElementById(`checkin${i}`).value,
+                    checkout: document.getElementById(`checkout${i}`).value,
+                    adults: document.getElementById(`adults${i}`).value,
+                    children: document.getElementById(`children${i}`).value,
+                    roomType: document.getElementById(`roomType${i}`).value,
+                });
+            }
+            return data;
+        }
+        
+        function loadTableData() {
+            let savedData = JSON.parse(localStorage.getItem("savedData"));
+            if (savedData) {
+                savedData.forEach((row, index) => {
+                    document.getElementById(`guest${index+1}`).value = row.guest;
+                    document.getElementById(`checkin${index+1}`).value = row.checkin;
+                    document.getElementById(`checkout${index+1}`).value = row.checkout;
+                    document.getElementById(`adults${index+1}`).value = row.adults;
+                    document.getElementById(`children${index+1}`).value = row.children;
+                    document.getElementById(`roomType${index+1}`).value = row.roomType;
+                });
+            }
+        }
+        
+        window.onload = loadTableData;
+    </script>
+</table>
 
-    function closeReservationScreen() {
-        document.getElementById("reservationScreen").style.display = "none";
-    }
-</script></body>
+</body>
 </html>
