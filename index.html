@@ -26,12 +26,12 @@
         <script>
             function createRow(index) {
                 return `<tr>
-                   <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this); navigateOnEnter(event, ${index}, 'checkin')"></td>
-                   <td><input type="date" id="checkin${index}" onkeydown="navigateOnEnter(event, ${index}, 'checkout')"></td>
-                   <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="navigateOnEnter(event, ${index}, 'adults')"></td>
+                   <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this); OnEnter(event, ${index}, 'checkin')"></td>
+                   <td><input type="date" id="checkin${index}" onkeydown="OnEnter(event, ${index}, 'checkout')"></td>
+                   <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="OnEnter(event, ${index}, 'adults')"></td>
                    <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
                     <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                    <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, index, 'guest')"></td>
+                    <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
                     <td>RES</td>
                 </tr>`;
             }
@@ -122,20 +122,20 @@
                 loadTableData();
                 document.addEventListener("keydown", disableTab);
             };
-      function OnEnter(event, index, nextFieldId) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        if (nextFieldId === "roomType") {
-            document.getElementById(`roomType${index}`).focus();
-        } else if (nextFieldId === "guest" && index < 10) {
-            document.getElementById(`guest${index + 1}`).focus();
-        } else {
-            document.getElementById(`${nextFieldId}${index}`).focus();
-        }
-    }
-}
-</script>
+
+            function OnEnter(event, index, nextFieldId) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    if (nextFieldId === "roomType") {
+                        document.getElementById(`roomType${index}`).focus();
+                    } else if (nextFieldId === "guest" && index < 10) {
+                        document.getElementById(`guest${index + 1}`).focus();
+                    } else {
+                        document.getElementById(`${nextFieldId}${index}`).focus();
+                    }
+                }
+            }
+        </script>
     </table>
 </body>
 </html>
-
