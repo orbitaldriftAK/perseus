@@ -59,10 +59,18 @@
             // Retrieve stored guest data from sessionStorage
             let guestName = sessionStorage.getItem("guestName") || "";
             let roomType = sessionStorage.getItem("roomType") || "";
+            let arrival = sessionStorage.getItem("arrival") || "";
+            let departure = sessionStorage.getItem("departure") || "";
+            let adultCount = sessionStorage.getItem("adultCount") || "";
+            let childCount = sessionStorage.getItem("childCount") || "";
 
             // Populate fields with stored data
             document.getElementById("guestName").value = guestName;
             document.getElementById("roomType").value = roomType;
+            document.getElementById("arrival").value = arrival;
+            document.getElementById("departure").value = departure;
+            document.getElementById("adultCount").value = adultCount;
+            document.getElementById("childCount").value = childCount;
 
             // F4 to go back to the Rooming List
             document.addEventListener("keydown", function (event) {
@@ -93,7 +101,7 @@
     </div>
     <div class="form-group">
         <label>Arrival:</label>
-        <input type="date">
+        <input type="date" id="arrival">
     </div>
     <div class="form-group">
         <label>Number of Nights:</label>
@@ -101,11 +109,19 @@
     </div>
     <div class="form-group">
         <label>Departure:</label>
-        <input type="date">
+        <input type="date" id="departure">
     </div>
     <div class="form-group">
         <label>Room Type:</label>
         <input type="text" id="roomType" placeholder="ST2Q / ST1K">
+    </div>
+    <div class="form-group">
+        <label>Adults (#A):</label>
+        <input type="number" id="adultCount" min="0" value="0">
+    </div>
+    <div class="form-group">
+        <label>Children (#C):</label>
+        <input type="number" id="childCount" min="0" value="0">
     </div>
     <div class="form-group">
         <label>Rate:</label>
