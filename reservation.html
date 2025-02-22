@@ -56,19 +56,19 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Retrieve stored guest data from sessionStorage
+            // Retrieve stored guest data from sessionStorage using the keys from index.html
             let guestName = sessionStorage.getItem("guestName") || "";
             let roomType = sessionStorage.getItem("roomType") || "";
-            let arrival = sessionStorage.getItem("arrival") || "";
-            let departure = sessionStorage.getItem("departure") || "";
+            let checkin = sessionStorage.getItem("checkin") || "";
+            let checkout = sessionStorage.getItem("checkout") || "";
             let adultCount = sessionStorage.getItem("adultCount") || "";
             let childCount = sessionStorage.getItem("childCount") || "";
 
             // Populate fields with stored data
             document.getElementById("guestName").value = guestName;
             document.getElementById("roomType").value = roomType;
-            document.getElementById("arrival").value = arrival;
-            document.getElementById("departure").value = departure;
+            document.getElementById("arrival").value = checkin;
+            document.getElementById("departure").value = checkout;
             document.getElementById("adultCount").value = adultCount;
             document.getElementById("childCount").value = childCount;
 
