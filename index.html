@@ -1,96 +1,115 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mock Rooming List</title>
+    <title>Rooming List</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid black; padding: 5px; text-align: center; }
-        input { width: 100%; border: none; text-align: center; }
-        .small-input { width: 30px; }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        table {
+            border-collapse: collapse;
+            width: 600px;
+            background: white;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: center;
+        }
+        .small-input {
+            width: 30px;
+        }
     </style>
 </head>
-<body>
-    <h2>Mock Rooming List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Guest Name</th>
-                <th>Check-in Date</th>
-                <th>Check-out Date</th>
-                <th>#A</th>
-                <th>#C</th>
-                <th>Reservation Status</th>
-            </tr>
-        </thead>
-        <tbody id="room-list">
-            <!-- JavaScript will generate rows here -->
-        </tbody>
-    </table><script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tbody = document.getElementById('room-list');
-        const totalRows = 10;
+<body onload="setInitialFocus()">
 
-        function createRow(index) {
-            let row = document.createElement('tr');
-            
-            row.innerHTML = `
-                <td><input type="text" class="input-field"></td>
-                <td><input type="date" class="input-field"></td>
-                <td><input type="date" class="input-field"></td>
-                <td><input type="number" class="input-field small-input" min="0" max="6"></td>
-                <td><input type="number" class="input-field small-input" min="0" max="6"></td>
-                <td><input type="text" value="RES" readonly></td>
-            `;
-            tbody.appendChild(row);
-        }
+<table>
+    <thead>
+        <tr>
+            <th>Guest Name</th>
+            <th>#A</th>
+            <th>#C</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Reservation Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- 10 rows for room entries -->
+        <script>
+            for (let i = 0; i < 10; i++) {
+                document.write(`
+                    <tr>
+                        <td><input type="text" class="guest-name"></td>
+                        <td><input type="number" class="small-input adults" min="0"></td>
+                        <td><input type="number" class="small-input children" min="0"></td>
+                        <td><input type="date"></td>
+                        <td><input type="date"></td>
+                        <td><input type="text" value="RES" readonly></td>
+                    </tr>
+                `);
+            }
+        </script>
+    </tbody>
+</table>
 
-        for (let i = 0; i < totalRows; i++) {
-            createRow(i);
-        }
+<script>
+    function setInitialFocus() {
+        document.querySelector('.guest-name').focus();
+    }
 
-        // Prevent mouse clicks
-        document.addEventListener('mousedown', function(event) {
-            event.preventDefault();
-        });
+    document.addEventListener('keydown', function(event) {
+        let inputs = Array.from(document.querySelectorAll("input"));
+        let index = inputs.indexOf(document.activeElement);
         
-        // Handle Enter key navigation
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Tab') {
-                event.preventDefault(); // Disable Tab
+        if (event.key === "Enter") {
+            event.preventDefault();
+            if (index >= 0 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
             }
-        });
+        }
 
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                let inputs = Array.from(document.querySelectorAll('.input-field'));
-                let currentIndex = inputs.indexOf(document.activeElement);
-                
-                if (currentIndex !== -1) {
-                    let nextIndex = currentIndex + 1;
-                    if (nextIndex < inputs.length) {
-                        inputs[nextIndex].focus();
-                    }
-                }
-                event.preventDefault();
+        if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+            event.preventDefault();
+            if (index < inputs.length - 1) {
+                inputs[index + 1].focus();
             }
-        });
+        }
 
-        // Max occupancy validation
-        document.addEventListener('input', function(event) {
-            if (event.target.type === 'number') {
-                let row = event.target.closest('tr');
-                let adults = parseInt(row.children[3].children[0].value) || 0;
-                let children = parseInt(row.children[4].children[0].value) || 0;
-                
-                if (adults + children > 6) {
-                    alert('Max occupancy exceeded');
-                    row.children[3].children[0].value = '';
-                    row.children[4].children[0].value = '';
-                }
+        if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            if (index > 0) {
+                inputs[index - 1].focus();
             }
-        });
+        }
+    });
+
+    document.addEventListener('input', function(event) {
+        if (event.target.classList.contains("adults") || event.target.classList.contains("children")) {
+            let row = event.target.closest("tr");
+            let adults = parseInt(row.querySelector(".adults").value) || 0;
+            let children = parseInt(row.querySelector(".children").value) || 0;
+            
+            if (adults + children > 6) {
+                alert("Max occupancy exceeded");
+                row.querySelector(".adults").value = "";
+                row.querySelector(".children").value = "";
+            }
+        }
     });
 </script>
 
