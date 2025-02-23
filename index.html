@@ -91,8 +91,8 @@
       function validateRoomType(event, index) {
         if (event.key === "F5") {
           event.preventDefault();
-          // Store the row identifier in localStorage before leaving index.html
-          localStorage.setItem("roomTypeRow", index);
+          // Save the currently editing row before leaving.
+          localStorage.setItem("currentlyEditingRow", index);
           window.location.href = "roomblock.html";
           return;
         }
@@ -169,15 +169,15 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for a stored room type and the specific row indicator.
-        let roomTypeRow = localStorage.getItem("roomTypeRow");
-        if (roomTypeRow) {
+        // Immediately check localStorage for the saved indicator "currentlyEditingRow" and room type.
+        let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
+        if (currentlyEditingRow) {
           let storedRoomType = localStorage.getItem("roomType");
-          if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
-            document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
-            alert("Loaded Room Type: " + storedRoomType + " successfully into the correct row!");
+          if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
+            document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
+            alert("Successfully loaded Room Type " + storedRoomType + " into the correct previously selected row.");
           }
-          localStorage.removeItem("roomTypeRow");
+          localStorage.removeItem("currentlyEditingRow");
         }
         document.addEventListener("keydown", disableTab);
       };
@@ -185,9 +185,10 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html.
+          // If Enter is pressed on the #C (children) field, save current data, save the row indicator, and go to roomblock.html.
           if (event.target.id.startsWith("children")) {
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
+            localStorage.setItem("currentlyEditingRow", index);
             window.location.href = "roomblock.html";
             return;
           }
@@ -197,7 +198,7 @@
           }
           // If Enter is pressed on a Guest Name field with text, auto-capitalize and autofill dates.
           if (event.target.id.startsWith("guest")) {
-            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract the internal row identifier.
+            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract the row identifier.
             let nameParts = event.target.value.split(" ");
             for (let i = 0; i < nameParts.length; i++) {
               if (nameParts[i].length > 0) {
