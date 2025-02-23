@@ -91,8 +91,8 @@
       function validateRoomType(event, index) {
         if (event.key === "F5") {
           event.preventDefault();
-          // Store the row number for later retrieval
-          sessionStorage.setItem("roomTypeRow", index);
+          // Store the row number for later retrieval using localStorage
+          localStorage.setItem("roomTypeRow", index);
           window.location.href = "roomblock.html";
           return;
         }
@@ -169,15 +169,15 @@
 
       window.onload = () => {
         loadTableData();
-        // Check if a room type was stored from roomblock.html and apply it to the corresponding row
-        let roomTypeRow = sessionStorage.getItem("roomTypeRow");
+        // Check if a room type was stored from roomblock.html and apply it to the corresponding row using localStorage
+        let roomTypeRow = localStorage.getItem("roomTypeRow");
         if (roomTypeRow) {
-          let storedRoomType = sessionStorage.getItem("roomType");
+          let storedRoomType = localStorage.getItem("roomType");
           if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
             document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
-            alert("Room Type loaded: " + storedRoomType);
+            alert("Room Type " + storedRoomType + " loaded successfully in row " + roomTypeRow);
           }
-          sessionStorage.removeItem("roomTypeRow");
+          localStorage.removeItem("roomTypeRow");
         }
         document.addEventListener("keydown", disableTab);
       };
