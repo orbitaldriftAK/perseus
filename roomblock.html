@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Type Rate Grid</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #C0C0C0;
+            padding: 20px;
+        }
+        .container {
+            width: 900px;
+            background-color: #F5F5F5;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .button-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .rate-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .rate-grid th, .rate-grid td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+        .rate-grid th {
+            background-color: #D3D3D3;
+        }
+        .input-box {
+            width: 40px;
+            text-align: center;
+        }
+        .footer-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div>Date: <input type="date"></div>
+        <div>ID: <input type="text" placeholder="ID"></div>
+    </div>
+
+    <div class="button-bar">
+        <button>New Guest Reservation</button>
+        <button>New Group/Function</button>
+        <button>View Availability</button>
+        <button>Print Rate Chart</button>
+    </div>
+
+    <table class="rate-grid">
+        <tr>
+            <th>Room Type</th>
+            <th>Cots</th>
+            <th>ADR</th>
+            <th>Day 1</th>
+            <th>Day 2</th>
+            <th>Day 3</th>
+            <th>Day 4</th>
+            <th>Day 5</th>
+            <th>Day 6</th>
+            <th>Day 7</th>
+            <th>Day 8</th>
+            <th>Day 9</th>
+            <th>Day 10</th>
+        </tr>
+        <tr>
+            <td>QQ</td>
+            <td><input type="number" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+        </tr>
+        <tr>
+            <td>ST</td>
+            <td><input type="number" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+        </tr>
+        <tr>
+            <td>Suite</td>
+            <td><input type="number" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+            <td><input type="text" class="input-box"></td>
+        </tr>
+    </table>
+
+    <div class="footer-buttons">
+        <button>Previous</button>
+        <button>Next</button>
+        <button>Save</button>
+    </div>
+</div>
+
+</body>
+</html>
