@@ -1,250 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rooming List</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid black; padding: 8px; text-align: center; }
-        input { width: 100%; border: none; text-align: center; }
-        input:focus { outline: none; }
-        /* Remove increment/decrement arrows from number inputs */
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        /* Style for the non-editable text box-like fields */
-        .readonly-field {
-            border: 1px solid black;
-            padding: 4px;
-            text-align: center;
-            background-color: #f0f0f0;
-            display: inline-block;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooming List</title>
+  <style>
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid black; padding: 8px; text-align: center; }
+    input { width: 100%; border: none; text-align: center; }
+    input:focus { outline: none; }
+    /* Remove increment/decrement arrows from number inputs */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    /* Style for the non-editable text box-like fields */
+    .readonly-field {
+      border: 1px solid black;
+      padding: 4px;
+      text-align: center;
+      background-color: #f0f0f0;
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
-    <h2>Rooming List</h2>
-    <div style="margin-bottom: 20px;">
-        <input type="text" class="readonly-field" readonly value="Sample Group Name Mar 25" style="margin: 10px auto; width: 400px; display: block; font-size: 1.2em;">
-        <div style="display: flex; align-items: center;">
-            <label style="font-weight: bold; margin-right: 5px;">Arrival Date</label>
-            <input type="text" class="readonly-field" readonly value="03-01-2025" style="width: auto;">
-        </div>
+  <h2>Rooming List</h2>
+  <div style="margin-bottom: 20px;">
+    <input type="text" class="readonly-field" readonly value="Sample Group Name Mar 25" style="margin: 10px auto; width: 400px; display: block; font-size: 1.2em;">
+    <div style="display: flex; align-items: center;">
+      <label style="font-weight: bold; margin-right: 5px;">Arrival Date</label>
+      <input type="text" class="readonly-field" readonly value="03-01-2025" style="width: auto;">
     </div>
-    <table>
-        <tr>
-            <th>Guest Name</th>
-            <th>Check-in Date</th>
-            <th>Check-out Date</th>
-            <th>#A</th>
-            <th>#C</th>
-            <th>Room Type</th>
-            <th>Reservation Status</th>
-        </tr>
-        <script>
-            function createRow(index) {
-                return `<tr>
-                   <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this); OnEnter(event, ${index}, 'checkin')"></td>
-                   <td><input type="date" id="checkin${index}" onkeydown="OnEnter(event, ${index}, 'checkout')"></td>
-                   <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="OnEnter(event, ${index}, 'adults')"></td>
-                   <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                   <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-                   <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
-                   <td>RES</td>
-                </tr>`;
+  </div>
+  <table>
+    <tr>
+      <th>Guest Name</th>
+      <th>Check-in Date</th>
+      <th>Check-out Date</th>
+      <th>#A</th>
+      <th>#C</th>
+      <th>Room Type</th>
+      <th>Reservation Status</th>
+    </tr>
+    <script>
+      function createRow(index) {
+        return `<tr>
+          <td><input type="text" id="guest${index}" onkeydown="checkF5(event, this); OnEnter(event, ${index}, 'checkin')"></td>
+          <td><input type="date" id="checkin${index}" onkeydown="OnEnter(event, ${index}, 'checkout')"></td>
+          <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="OnEnter(event, ${index}, 'adults')"></td>
+          <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
+          <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
+          <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
+          <td>RES</td>
+        </tr>`;
+      }
+      document.write(
+        createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) +
+        createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10)
+      );
+
+      function validateDates(index) {
+        let checkin = document.getElementById(`checkin${index}`).value;
+        let checkout = document.getElementById(`checkout${index}`).value;
+        if (checkin && checkout) {
+          if (checkin === checkout) {
+            alert("Departure must be different than arrival");
+            document.getElementById(`checkout${index}`).value = "";
+          } else if (checkout < checkin) {
+            alert("Checkout can't be earlier than check-in");
+            document.getElementById(`checkout${index}`).value = "";
+          }
+        }
+      }
+
+      function validateOccupancy(index) {
+        let adults = parseInt(document.getElementById(`adults${index}`).value) || 0;
+        let children = parseInt(document.getElementById(`children${index}`).value) || 0;
+        if (adults + children > 6) {
+          alert("Max occupancy exceeded");
+          document.getElementById(`adults${index}`).value = "";
+          document.getElementById(`children${index}`).value = "";
+        }
+      }
+
+      function validateRoomType(event, index) {
+        if (event.key === "F5") {
+          event.preventDefault();
+          // Store the row number for later retrieval
+          sessionStorage.setItem("roomTypeRow", index);
+          window.location.href = "roomblock.html";
+          return;
+        }
+        if (event.key === "Enter") {
+          let roomTypeField = document.getElementById(`roomType${index}`);
+          let roomType = roomTypeField.value.toUpperCase();
+          if (roomType !== "ST2Q" && roomType !== "ST1K") {
+            alert("Invalid room type");
+            roomTypeField.value = "";
+          } else {
+            roomTypeField.value = roomType;
+          }
+        }
+      }
+
+      function checkF5(event, input) {
+        if (event.key === "F5") {
+          event.preventDefault();
+          let guestName = input.value.trim();
+          if (guestName !== "") {
+            let rowIndex = input.id.replace("guest", "");
+            let checkin = document.getElementById(`checkin${rowIndex}`).value;
+            let checkout = document.getElementById(`checkout${rowIndex}`).value;
+            let roomType = document.getElementById(`roomType${rowIndex}`).value;
+            let adultCount = document.getElementById(`adults${rowIndex}`).value;
+            let childCount = document.getElementById(`children${rowIndex}`).value;
+
+            sessionStorage.setItem('guestName', guestName);
+            sessionStorage.setItem('checkin', checkin);
+            sessionStorage.setItem('checkout', checkout);
+            sessionStorage.setItem('roomType', roomType);
+            sessionStorage.setItem('adultCount', adultCount);
+            sessionStorage.setItem('childCount', childCount);
+
+            window.location.href = "reservation.html";
+          }
+        }
+      }
+
+      function getTableData() {
+        let data = [];
+        for (let i = 1; i <= 10; i++) {
+          data.push({
+            guest: document.getElementById(`guest${i}`).value,
+            checkin: document.getElementById(`checkin${i}`).value,
+            checkout: document.getElementById(`checkout${i}`).value,
+            adults: document.getElementById(`adults${i}`).value,
+            children: document.getElementById(`children${i}`).value,
+            roomType: document.getElementById(`roomType${i}`).value,
+          });
+        }
+        return data;
+      }
+
+      function loadTableData() {
+        let savedData = JSON.parse(localStorage.getItem("savedData"));
+        if (savedData) {
+          savedData.forEach((row, index) => {
+            document.getElementById(`guest${index+1}`).value = row.guest;
+            document.getElementById(`checkin${index+1}`).value = row.checkin;
+            document.getElementById(`checkout${index+1}`).value = row.checkout;
+            document.getElementById(`adults${index+1}`).value = row.adults;
+            document.getElementById(`children${index+1}`).value = row.children;
+            document.getElementById(`roomType${index+1}`).value = row.roomType;
+          });
+        }
+      }
+
+      function disableTab(event) {
+        if (event.key === "Tab") {
+          event.preventDefault();
+        }
+      }
+
+      window.onload = () => {
+        loadTableData();
+        // Check if a room type was stored from roomblock.html and apply it to the corresponding row
+        let roomTypeRow = sessionStorage.getItem("roomTypeRow");
+        if (roomTypeRow) {
+          let storedRoomType = sessionStorage.getItem("roomType");
+          if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
+            document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
+          }
+          sessionStorage.removeItem("roomTypeRow");
+        }
+        document.addEventListener("keydown", disableTab);
+      };
+
+      function OnEnter(event, index, nextFieldId) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          // If in Guest Name field and it contains text, auto-capitalize and immediately autofill dates
+          if (event.target.id.startsWith("guest")) {
+            let nameParts = event.target.value.split(" ");
+            for (let i = 0; i < nameParts.length; i++) {
+              if (nameParts[i].length > 0) {
+                nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
+              }
             }
-            document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) + createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10));
-
-            function validateDates(index) {
-                let checkin = document.getElementById(`checkin${index}`).value;
-                let checkout = document.getElementById(`checkout${index}`).value;
-                if (checkin && checkout) {
-                    if (checkin === checkout) {
-                        alert("Departure must be different than arrival");
-                        document.getElementById(`checkout${index}`).value = "";
-                    } else if (checkout < checkin) {
-                        alert("Checkout can't be earlier than check-in");
-                        document.getElementById(`checkout${index}`).value = "";
-                    }
-                }
+            event.target.value = nameParts.join(" ");
+            if (event.target.value.trim() !== "") {
+              let rowNum = event.target.id.replace("guest", "");
+              document.getElementById(`checkin${rowNum}`).value = "03-01-2025";
+              document.getElementById(`checkout${rowNum}`).value = "03-03-2025";
             }
-
-            function validateOccupancy(index) {
-                let adults = parseInt(document.getElementById(`adults${index}`).value) || 0;
-                let children = parseInt(document.getElementById(`children${index}`).value) || 0;
-                if (adults + children > 6) {
-                    alert("Max occupancy exceeded");
-                    document.getElementById(`adults${index}`).value = "";
-                    document.getElementById(`children${index}`).value = "";
-                }
+          }
+          if (event.target.id.startsWith("children")) {
+            window.location.href = "roomblock.html";
+            return;
+          }
+          if (nextFieldId === "roomType") {
+            document.getElementById(`roomType${index}`).focus();
+          } else if (nextFieldId === "guest" && index < 10) {
+            document.getElementById(`guest${index + 1}`).focus();
+          } else {
+            document.getElementById(`${nextFieldId}${index}`).focus();
+          }
+        }
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+          if (event.target.id.startsWith("guest")) {
+            event.preventDefault();
+            let rowIndex = parseInt(event.target.id.replace("guest", ""));
+            if (event.key === "ArrowUp" && rowIndex > 1) {
+              document.getElementById(`guest${rowIndex - 1}`).focus();
+            } else if (event.key === "ArrowDown" && rowIndex < 10) {
+              document.getElementById(`guest${rowIndex + 1}`).focus();
             }
-
-            function validateRoomType(event, index) {
-                if (event.key === "F5") {
-                    event.preventDefault();
-                    // Store the row number for later retrieval
-                    sessionStorage.setItem("roomTypeRow", index);
-                    window.location.href = "roomblock.html";
-                    return;
-                }
-                if (event.key === "Enter") {
-                    let roomTypeField = document.getElementById(`roomType${index}`);
-                    let roomType = roomTypeField.value.toUpperCase();
-                    if (roomType !== "ST2Q" && roomType !== "ST1K") {
-                        alert("Invalid room type");
-                        roomTypeField.value = "";
-                    } else {
-                        roomTypeField.value = roomType;
-                    }
-                }
+            return;
+          }
+          if (event.target.id.startsWith("checkin") || event.target.id.startsWith("checkout") ||
+              event.target.id.startsWith("adults") || event.target.id.startsWith("children")) {
+            event.preventDefault();
+            return;
+          }
+        }
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault();
+          const fieldOrder = ["guest", "checkin", "checkout", "adults", "children", "roomType"];
+          const currentId = event.target.id;
+          const match = currentId.match(/^([a-zA-Z]+)(\d+)$/);
+          if (match) {
+            const prefix = match[1];
+            const rowNum = match[2];
+            const pos = fieldOrder.indexOf(prefix);
+            if (event.key === "ArrowLeft" && pos > 0) {
+              const newFieldId = fieldOrder[pos - 1] + rowNum;
+              document.getElementById(newFieldId).focus();
+            } else if (event.key === "ArrowRight" && pos < fieldOrder.length - 1) {
+              const newFieldId = fieldOrder[pos + 1] + rowNum;
+              document.getElementById(newFieldId).focus();
             }
-
-            function checkF5(event, input) {
-                if (event.key === "F5") {
-                    event.preventDefault();
-                    let guestName = input.value.trim();
-                    if (guestName !== "") {
-                        let rowIndex = input.id.replace("guest", "");
-                        let checkin = document.getElementById(`checkin${rowIndex}`).value;
-                        let checkout = document.getElementById(`checkout${rowIndex}`).value;
-                        let roomType = document.getElementById(`roomType${rowIndex}`).value;
-                        let adultCount = document.getElementById(`adults${rowIndex}`).value;
-                        let childCount = document.getElementById(`children${rowIndex}`).value;
-                        
-                        sessionStorage.setItem('guestName', guestName);
-                        sessionStorage.setItem('checkin', checkin);
-                        sessionStorage.setItem('checkout', checkout);
-                        sessionStorage.setItem('roomType', roomType);
-                        sessionStorage.setItem('adultCount', adultCount);
-                        sessionStorage.setItem('childCount', childCount);
-
-                        window.location.href = "reservation.html";
-                    }
-                }
-            }
-
-            function getTableData() {
-                let data = [];
-                for (let i = 1; i <= 10; i++) {
-                    data.push({
-                        guest: document.getElementById(`guest${i}`).value,
-                        checkin: document.getElementById(`checkin${i}`).value,
-                        checkout: document.getElementById(`checkout${i}`).value,
-                        adults: document.getElementById(`adults${i}`).value,
-                        children: document.getElementById(`children${i}`).value,
-                        roomType: document.getElementById(`roomType${i}`).value,
-                    });
-                }
-                return data;
-            }
-
-            function loadTableData() {
-                let savedData = JSON.parse(localStorage.getItem("savedData"));
-                if (savedData) {
-                    savedData.forEach((row, index) => {
-                        document.getElementById(`guest${index+1}`).value = row.guest;
-                        document.getElementById(`checkin${index+1}`).value = row.checkin;
-                        document.getElementById(`checkout${index+1}`).value = row.checkout;
-                        document.getElementById(`adults${index+1}`).value = row.adults;
-                        document.getElementById(`children${index+1}`).value = row.children;
-                        document.getElementById(`roomType${index+1}`).value = row.roomType;
-                    });
-                }
-            }
-
-            function disableTab(event) {
-                if (event.key === "Tab") {
-                    event.preventDefault();
-                }
-            }
-
-            window.onload = () => {
-                loadTableData();
-                // Check if a room type was stored from roomblock.html and apply it to the corresponding row
-                let roomTypeRow = sessionStorage.getItem("roomTypeRow");
-                if (roomTypeRow) {
-                    let storedRoomType = sessionStorage.getItem("roomType");
-                    if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
-                        document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
-                    }
-                    sessionStorage.removeItem("roomTypeRow");
-                }
-                document.addEventListener("keydown", disableTab);
-            };
-
-            function OnEnter(event, index, nextFieldId) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    // If in Guest Name field and it contains text, auto-capitalize and immediately autofill dates
-                    if (event.target.id.startsWith("guest")) {
-                        let nameParts = event.target.value.split(" ");
-                        for (let i = 0; i < nameParts.length; i++) {
-                            if (nameParts[i].length > 0) {
-                                nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
-                            }
-                        }
-                        event.target.value = nameParts.join(" ");
-                        if (event.target.value.trim() !== "") {
-                            document.getElementById(`checkin${index}`).value = "03-01-2025";
-                            document.getElementById(`checkout${index}`).value = "03-03-2025";
-                        }
-                    }
-                    if (event.target.id.startsWith("children")) {
-                        window.location.href = "roomblock.html";
-                        return;
-                    }
-                    if (nextFieldId === "roomType") {
-                        document.getElementById(`roomType${index}`).focus();
-                    } else if (nextFieldId === "guest" && index < 10) {
-                        document.getElementById(`guest${index + 1}`).focus();
-                    } else {
-                        document.getElementById(`${nextFieldId}${index}`).focus();
-                    }
-                }
-                if ((event.key === "ArrowUp" || event.key === "ArrowDown")) {
-                    if (event.target.id.startsWith("guest")) {
-                        event.preventDefault();
-                        let rowIndex = parseInt(event.target.id.replace("guest", ""));
-                        if (event.key === "ArrowUp" && rowIndex > 1) {
-                            document.getElementById(`guest${rowIndex - 1}`).focus();
-                        } else if (event.key === "ArrowDown" && rowIndex < 10) {
-                            document.getElementById(`guest${rowIndex + 1}`).focus();
-                        }
-                        return;
-                    }
-                    if (event.target.id.startsWith("checkin") || event.target.id.startsWith("checkout") ||
-                        event.target.id.startsWith("adults") || event.target.id.startsWith("children")) {
-                        event.preventDefault();
-                        return;
-                    }
-                }
-                if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-                    event.preventDefault();
-                    const fieldOrder = ["guest", "checkin", "checkout", "adults", "children", "roomType"];
-                    const currentId = event.target.id;
-                    const match = currentId.match(/^([a-zA-Z]+)(\d+)$/);
-                    if (match) {
-                        const prefix = match[1];
-                        const rowNum = match[2];
-                        const pos = fieldOrder.indexOf(prefix);
-                        if (event.key === "ArrowLeft" && pos > 0) {
-                            const newFieldId = fieldOrder[pos - 1] + rowNum;
-                            document.getElementById(newFieldId).focus();
-                        } else if (event.key === "ArrowRight" && pos < fieldOrder.length - 1) {
-                            const newFieldId = fieldOrder[pos + 1] + rowNum;
-                            document.getElementById(newFieldId).focus();
-                        }
-                    }
-                    return;
-                }
-            }
-        </script>
-    </table>
+          }
+          return;
+        }
+      }
+    </script>
+  </table>
 </body>
 </html>
