@@ -169,15 +169,16 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for a saved room type and row indicator.
+        // Immediately check localStorage for the saved row indicator and room type.
         let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
         if (currentlyEditingRow) {
-          let storedRoomType = localStorage.getItem("roomType");
+          let storedRoomType = localStorage.getItem("selectedRoomType");
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
-            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct previously selected row.");
+            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
           }
           localStorage.removeItem("currentlyEditingRow");
+          localStorage.removeItem("selectedRoomType");
         }
         document.addEventListener("keydown", disableTab);
       };
