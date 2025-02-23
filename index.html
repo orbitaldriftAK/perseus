@@ -55,7 +55,7 @@
           <td><input type="date" id="checkout${index}" onblur="validateDates(${index})" onkeydown="OnEnter(event, ${index}, 'adults')"></td>
           <td><input type="number" id="adults${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'children')" oninput="validateOccupancy(${index})" style="width:40px"></td>
           <td><input type="number" id="children${index}" min="0" max="6" onkeydown="OnEnter(event, ${index}, 'roomType')" oninput="validateOccupancy(${index})" style="width:40px"></td>
-          <td><input type="text" id="roomType${index}" onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
+          <td><input type="text" id="roomType${index}" readonly onkeydown="validateRoomType(event, ${index}); OnEnter(event, ${index}, 'guest')"></td>
           <td>RES</td>
         </tr>`;
       }
@@ -148,7 +148,7 @@
       }
 
       function loadTableData() {
-        let savedData = JSON.parse(sessionStorage.getItem("savedData"));
+        let savedData = JSON.parse(localStorage.getItem("savedData"));
         if (savedData) {
           savedData.forEach((row, index) => {
             document.getElementById(`guest${index+1}`).value = row.guest;
@@ -184,17 +184,26 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // Fixed date autofill logic using YYYY-MM-DD format and proper row extraction
-          let rowIndex = event.target.id.match(/\d+/)[0]; // Extract number from "guest1", "guest2", etc.
-          // Auto-capitalize guest name
-          let nameParts = event.target.value.split(" ");
-          for (let i = 0; i < nameParts.length; i++) {
-            if (nameParts[i].length > 0) {
-              nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
-            }
+          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html
+          if (event.target.id.startsWith("children")) {
+            localStorage.setItem("savedData", JSON.stringify(getTableData()));
+            window.location.href = "roomblock.html";
+            return;
           }
-          event.target.value = nameParts.join(" ");
-          if (event.target.value.trim() !== "") {
+          // If Enter is pressed on a Guest Name field with no text, do nothing.
+          if (event.target.id.startsWith("guest") && event.target.value.trim() === "") {
+            return;
+          }
+          // If Enter is pressed on a Guest Name field with text, auto-capitalize and autofill dates.
+          if (event.target.id.startsWith("guest")) {
+            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract number from "guest1", "guest2", etc.
+            let nameParts = event.target.value.split(" ");
+            for (let i = 0; i < nameParts.length; i++) {
+              if (nameParts[i].length > 0) {
+                nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
+              }
+            }
+            event.target.value = nameParts.join(" ");
             document.getElementById(`checkin${rowIndex}`).value = "2025-03-01";
             document.getElementById(`checkout${rowIndex}`).value = "2025-03-03";
           }
