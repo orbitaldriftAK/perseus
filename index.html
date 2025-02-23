@@ -149,15 +149,23 @@
 
             function OnEnter(event, index, nextFieldId) {
                 // Up/Down arrow navigation for Guest Name fields only
-                if (event.target.id.startsWith("guest") && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
-                    event.preventDefault();
-                    let rowIndex = parseInt(event.target.id.replace("guest", ""));
-                    if (event.key === "ArrowUp" && rowIndex > 1) {
-                        document.getElementById(`guest${rowIndex - 1}`).focus();
-                    } else if (event.key === "ArrowDown" && rowIndex < 10) {
-                        document.getElementById(`guest${rowIndex + 1}`).focus();
+                if ((event.key === "ArrowUp" || event.key === "ArrowDown")) {
+                    if (event.target.id.startsWith("guest")) {
+                        event.preventDefault();
+                        let rowIndex = parseInt(event.target.id.replace("guest", ""));
+                        if (event.key === "ArrowUp" && rowIndex > 1) {
+                            document.getElementById(`guest${rowIndex - 1}`).focus();
+                        } else if (event.key === "ArrowDown" && rowIndex < 10) {
+                            document.getElementById(`guest${rowIndex + 1}`).focus();
+                        }
+                        return;
                     }
-                    return;
+                    // For Check-in Date, Check-out Date, #A, and #C fields, prevent default behavior.
+                    if (event.target.id.startsWith("checkin") || event.target.id.startsWith("checkout") ||
+                        event.target.id.startsWith("adults") || event.target.id.startsWith("children")) {
+                        event.preventDefault();
+                        return;
+                    }
                 }
                 // Left/Right arrow key navigation within the same row
                 if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
@@ -193,7 +201,7 @@
                     if (event.target.id.startsWith("guest")) {
                         let nameParts = event.target.value.split(" ");
                         for (let i = 0; i < nameParts.length; i++) {
-                            if(nameParts[i].length > 0){
+                            if (nameParts[i].length > 0) {
                                 nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
                             }
                         }
