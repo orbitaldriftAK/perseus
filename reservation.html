@@ -166,7 +166,7 @@
                 }
             });
 
-            // CLEAR ALL NOTES AND INDICATORS PERMANENTLY WHEN INDEX.HTML CLEAR BUTTON PRESSED
+            // CLEAR ALL NOTES PERMANENTLY WHEN INDEX.HTML CLEAR BUTTON PRESSED
             window.addEventListener("storage", function(event) {
                 if (event.key === "clearAllNotes" && event.newValue === "true") {
                     Object.keys(localStorage).forEach(function(key) {
