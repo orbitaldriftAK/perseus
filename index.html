@@ -169,6 +169,17 @@
 
       window.onload = () => {
         loadTableData();
+        // Immediately check localStorage for the saved row indicator and room type.
+        let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
+        if (currentlyEditingRow) {
+          let storedRoomType = localStorage.getItem("selectedRoomType");
+          if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
+            document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
+            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
+          }
+          localStorage.removeItem("currentlyEditingRow");
+          localStorage.removeItem("selectedRoomType");
+        }
         document.addEventListener("keydown", disableTab);
       };
 
@@ -177,16 +188,15 @@
           event.preventDefault();
           // If Enter is pressed on the #C (children) field:
           if (event.target.id.startsWith("children")) {
-            // Check the current row's Room Type field
             let rowIndex = event.target.id.match(/\d+/)[0];
-            let roomTypeVal = document.getElementById("roomType" + rowIndex).value.trim();
-            if (roomTypeVal === "") {
+            // Only navigate to roomblock.html if Room Type is empty.
+            if (document.getElementById("roomType" + rowIndex).value.trim() === "") {
               localStorage.setItem("savedData", JSON.stringify(getTableData()));
               localStorage.setItem("currentlyEditingRow", index);
               window.location.href = "roomblock.html";
               return;
             } else {
-              // If Room Type is populated, simply move to the Guest Name field of the next row.
+              // If Room Type is populated, move focus to next row's Guest Name field.
               if (index < 10) {
                 document.getElementById("guest" + (index + 1)).focus();
               }
@@ -207,25 +217,25 @@
               }
             }
             event.target.value = nameParts.join(" ");
-            document.getElementById(`checkin${rowIndex}`).value = "2025-03-01";
-            document.getElementById(`checkout${rowIndex}`).value = "2025-03-03";
+            document.getElementById("checkin" + rowIndex).value = "2025-03-01";
+            document.getElementById("checkout" + rowIndex).value = "2025-03-03";
           }
-          // Restore navigation functionality
+          // Restore navigation functionality.
           if (nextFieldId === "roomType") {
-            document.getElementById(`roomType${index}`).focus();
+            document.getElementById("roomType" + index).focus();
           } else if (nextFieldId === "guest" && index < 10) {
-            document.getElementById(`guest${index + 1}`).focus();
+            document.getElementById("guest" + (index + 1)).focus();
           } else {
-            document.getElementById(`${nextFieldId}${index}`).focus();
+            document.getElementById(nextFieldId + index).focus();
           }
         } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
           if (event.target.id.startsWith("guest")) {
             event.preventDefault();
             let rowIndex = parseInt(event.target.id.replace("guest", ""));
             if (event.key === "ArrowUp" && rowIndex > 1) {
-              document.getElementById(`guest${rowIndex - 1}`).focus();
+              document.getElementById("guest" + (rowIndex - 1)).focus();
             } else if (event.key === "ArrowDown" && rowIndex < 10) {
-              document.getElementById(`guest${rowIndex + 1}`).focus();
+              document.getElementById("guest" + (rowIndex + 1)).focus();
             }
             return;
           }
