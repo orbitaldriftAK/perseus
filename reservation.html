@@ -79,6 +79,21 @@
                 }
             });
 
+            // F5 on Guest Name field to navigate to additionalname.html while saving data
+            document.getElementById("guestName").addEventListener("keydown", function (event) {
+                if (event.key === "F5") {
+                    event.preventDefault();
+                    // Save all the current field values into sessionStorage
+                    sessionStorage.setItem("guestName", document.getElementById("guestName").value);
+                    sessionStorage.setItem("checkin", document.getElementById("arrival").value);
+                    sessionStorage.setItem("checkout", document.getElementById("departure").value);
+                    sessionStorage.setItem("roomType", document.getElementById("roomType").value);
+                    sessionStorage.setItem("adultCount", document.getElementById("adultCount").value);
+                    sessionStorage.setItem("childCount", document.getElementById("childCount").value);
+                    window.location.href = "additionalname.html";
+                }
+            });
+
             // Cancel button functionality
             document.getElementById("cancelBtn").addEventListener("click", function () {
                 window.location.href = "index.html";
