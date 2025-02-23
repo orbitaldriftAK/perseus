@@ -227,8 +227,12 @@
           // Reset room availability numbers in roomblock.html to their original values.
           localStorage.setItem("ST2Q_availability", 8);
           localStorage.setItem("ST1K_availability", 2);
-          // Trigger clearing of 'Notes About' elements in reservation.html (if needed)
-          localStorage.setItem("clearNotes", "true");
+          // Trigger clearing of 'Notes About' elements in reservation.html
+          localStorage.setItem("clearAllNotes", "true");
+          // Use a timeout to remove the flag, ensuring the storage event fires.
+          setTimeout(() => {
+            localStorage.removeItem("clearAllNotes");
+          }, 100);
         });
       });
 
