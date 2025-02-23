@@ -175,6 +175,7 @@
           let storedRoomType = sessionStorage.getItem("roomType");
           if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
             document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
+            alert("Room Type loaded: " + storedRoomType);
           }
           sessionStorage.removeItem("roomTypeRow");
         }
