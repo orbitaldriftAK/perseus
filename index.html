@@ -224,8 +224,9 @@
             document.getElementById("children" + i).value = "";
           }
           localStorage.removeItem("savedData");
-          // Signal roomblock.html to reset availability numbers
-          localStorage.setItem("resetAvailability", JSON.stringify({ ST2Q: 8, ST1K: 2 }));
+          // Trigger reset of room availability numbers in roomblock.html:
+          localStorage.setItem("ST2Q_availability", 8);
+          localStorage.setItem("ST1K_availability", 2);
         });
       });
 
