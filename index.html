@@ -169,13 +169,13 @@
 
       window.onload = () => {
         loadTableData();
-        // Check if a room type was stored from roomblock.html and apply it to the corresponding row using localStorage
+        // Immediately check localStorage for a stored room type and row number.
         let roomTypeRow = localStorage.getItem("roomTypeRow");
         if (roomTypeRow) {
           let storedRoomType = localStorage.getItem("roomType");
           if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
             document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
-            alert("Room Type " + storedRoomType + " loaded successfully in row " + roomTypeRow);
+            alert("Loaded Room Type: " + storedRoomType + " into Row: " + roomTypeRow + " successfully!");
           }
           localStorage.removeItem("roomTypeRow");
         }
