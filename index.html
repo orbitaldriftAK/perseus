@@ -18,10 +18,25 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+        /* Style for the non-editable text box-like fields */
+        .readonly-field {
+            border: 1px solid black;
+            padding: 4px;
+            text-align: center;
+            background-color: #f0f0f0;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
     <h2>Rooming List</h2>
+    <div style="margin-bottom: 20px;">
+        <input type="text" class="readonly-field" readonly value="Sample Group Name Mar 25" style="margin-bottom: 10px; width: auto; display: block;">
+        <div style="display: flex; align-items: center;">
+            <label style="font-weight: bold; margin-right: 5px;">Arrival Date</label>
+            <input type="text" class="readonly-field" readonly value="03-01-2025" style="width: auto;">
+        </div>
+    </div>
     <table>
         <tr>
             <th>Guest Name</th>
