@@ -71,6 +71,11 @@
             }
 
             function validateRoomType(event, index) {
+                if (event.key === "F5") {
+                    event.preventDefault();
+                    window.location.href = "roomblock.html";
+                    return;
+                }
                 if (event.key === "Enter") {
                     let roomTypeField = document.getElementById(`roomType${index}`);
                     let roomType = roomTypeField.value.toUpperCase();
