@@ -130,8 +130,10 @@
             let adultCount = document.getElementById(`adults${rowIndex}`).value;
             let childCount = document.getElementById(`children${rowIndex}`).value;
             
-            // Save entire table data to localStorage so room type persists after returning from reservation.html
+            // Save entire table data so that Room Type persists upon return from reservation.html
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
+            // Save the current row for focus after return
+            localStorage.setItem("lastReservationRow", rowIndex);
             
             sessionStorage.setItem('guestName', guestName);
             sessionStorage.setItem('checkin', checkin);
@@ -182,14 +184,14 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for the saved row indicator and room type.
+        // Check if returning from roomblock.html:
         let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
         if (currentlyEditingRow) {
           let storedRoomType = localStorage.getItem("selectedRoomType");
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
             alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
-            // After loading, focus on the Guest Name field of the next row.
+            // After loading, focus on the Guest Name field of the row below.
             let nextRow = parseInt(currentlyEditingRow) + 1;
             if (document.getElementById("guest" + nextRow)) {
               document.getElementById("guest" + nextRow).focus();
@@ -197,6 +199,15 @@
           }
           localStorage.removeItem("currentlyEditingRow");
           localStorage.removeItem("selectedRoomType");
+        }
+        // Check if returning from reservation.html:
+        let lastResRow = localStorage.getItem("lastReservationRow");
+        if (lastResRow) {
+          let nextRow = parseInt(lastResRow) + 1;
+          if (document.getElementById("guest" + nextRow)) {
+            document.getElementById("guest" + nextRow).focus();
+          }
+          localStorage.removeItem("lastReservationRow");
         }
         document.addEventListener("keydown", disableTab);
       };
@@ -207,6 +218,10 @@
           for (let i = 1; i <= 10; i++) {
             document.getElementById("guest" + i).value = "";
             document.getElementById("roomType" + i).value = "";
+            document.getElementById("checkin" + i).value = "";
+            document.getElementById("checkout" + i).value = "";
+            document.getElementById("adults" + i).value = "";
+            document.getElementById("children" + i).value = "";
           }
           localStorage.removeItem("savedData");
         });
