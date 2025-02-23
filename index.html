@@ -195,6 +195,7 @@
             event.target.value = nameParts.join(" ");
             if (event.target.value.trim() !== "") {
               let rowNum = event.target.id.replace("guest", "");
+              console.log("Row number is:", rowNum);
               document.getElementById(`checkin${rowNum}`).value = "03-01-2025";
               document.getElementById(`checkout${rowNum}`).value = "03-03-2025";
             }
