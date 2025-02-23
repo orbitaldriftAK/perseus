@@ -105,8 +105,14 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>QQ</td>
-            <td><input type="number" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
+            <!-- Editable: Sat-Mar 1 (data-col="0") and Sun-Mar 2 (data-col="1") -->
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="0" data-col="0">
+            </td>
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="0" data-col="1">
+            </td>
+            <!-- Remaining non-editable cells -->
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -118,8 +124,12 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>ST</td>
-            <td><input type="number" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="1" data-col="0">
+            </td>
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="1" data-col="1">
+            </td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -131,8 +141,12 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>Suite</td>
-            <td><input type="number" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="2" data-col="0">
+            </td>
+            <td>
+                <input type="number" class="input-box editable" value="---" data-row="2" data-col="1">
+            </td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -150,6 +164,79 @@
         <button>Save</button>
     </div>
 </div>
+
+<script>
+    // Attach event listeners to editable inputs in Sat-Mar 1 and Sun-Mar 2 columns
+    document.querySelectorAll('.editable').forEach(input => {
+        input.dataset.committed = "false";
+        input.addEventListener('focus', function() {
+            if(this.value === '---') {
+                this.value = '';
+            }
+            this.dataset.committed = "false";
+        });
+        input.addEventListener('blur', function() {
+            if(this.dataset.committed !== "true" || this.value === '') {
+                this.value = '---';
+            }
+        });
+        input.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Delete', 'Enter'];
+            // Allow only numeric input (digits) or allowed control keys
+            if (!allowedKeys.includes(e.key) && !/^\d$/.test(e.key)) {
+                e.preventDefault();
+            }
+            // If Enter is pressed, commit the value
+            if(e.key === 'Enter') {
+                this.dataset.committed = "true";
+                this.blur();
+                e.preventDefault();
+            }
+            // Handle arrow key navigation between editable boxes
+            if(e.key.startsWith('Arrow')) {
+                e.preventDefault();
+                navigateEditable(this, e.key);
+            }
+        });
+    });
+
+    // Navigation between editable cells using arrow keys.
+    // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
+    function navigateEditable(current, key) {
+        let row = parseInt(current.dataset.row);
+        let col = parseInt(current.dataset.col);
+        let newRow = row;
+        let newCol = col;
+        if (key === 'ArrowRight') {
+            if (col < 1) {
+                newCol = col + 1;
+            } else if (col === 1 && row < 2) {
+                newRow = row + 1;
+                newCol = 0;
+            }
+        } else if (key === 'ArrowLeft') {
+            if (col > 0) {
+                newCol = col - 1;
+            } else if (col === 0 && row > 0) {
+                newRow = row - 1;
+                newCol = 1;
+            }
+        } else if (key === 'ArrowDown') {
+            if (row < 2) {
+                newRow = row + 1;
+            }
+        } else if (key === 'ArrowUp') {
+            if (row > 0) {
+                newRow = row - 1;
+            }
+        }
+        let selector = `.editable[data-row="${newRow}"][data-col="${newCol}"]`;
+        let nextInput = document.querySelector(selector);
+        if (nextInput) {
+            nextInput.focus();
+        }
+    }
+</script>
 
 </body>
 </html>
