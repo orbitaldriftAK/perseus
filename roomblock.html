@@ -192,9 +192,9 @@
         if(roomType === "Suite") {
           alert("Not Enough Inventory Available");
         } else {
-          // Store the room type in localStorage so that index.html can easily retrieve it
+          // Store exactly the room type under the key "selectedRoomType" in localStorage
           localStorage.setItem('selectedRoomType', roomType);
-          // Show confirmation alert
+          // Show confirmation alert exactly as required
           alert("Successfully saved Room Type: " + roomType);
           // Navigate back to index.html
           window.location.href = "index.html";
