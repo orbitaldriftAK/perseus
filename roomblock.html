@@ -1,257 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Type Rate Grid</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #C0C0C0;
-            padding: 20px;
-        }
-        .container {
-            width: 900px;
-            background-color: #F5F5F5;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .button-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .rate-grid {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .rate-grid th, .rate-grid td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: center;
-        }
-        .rate-grid th {
-            background-color: #D3D3D3;
-        }
-        .input-box {
-            width: 40px;
-            text-align: center;
-        }
-        /* Remove spinner arrows for number inputs */
-        input[type=number]::-webkit-outer-spin-button,
-        input[type=number]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        .footer-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-        /* Highlight editable cells on focus */
-        .input-box.editable:focus {
-            outline: 2px solid blue;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Room Type Rate Grid</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #C0C0C0;
+      padding: 20px;
+    }
+    .container {
+      width: 900px;
+      background-color: #F5F5F5;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .button-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .rate-grid {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .rate-grid th, .rate-grid td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+    }
+    .rate-grid th {
+      background-color: #D3D3D3;
+    }
+    .input-box {
+      width: 40px;
+      text-align: center;
+    }
+    /* Remove spinner arrows for number inputs */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    .footer-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+    /* Highlight editable cells on focus */
+    .input-box.editable:focus {
+      outline: 2px solid blue;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <div>Date: <input type="date" value="2025-03-01"></div>
-        <div>ID: <input type="text" placeholder="ID"></div>
-    </div>
+  <div class="header">
+    <div>Date: <input type="date" value="2025-03-01"></div>
+    <div>ID: <input type="text" placeholder="ID"></div>
+  </div>
 
-    <div class="button-bar">
-        <button>New Guest Reservation</button>
-        <button>New Group/Function</button>
-        <button>View Availability</button>
-        <button>Print Rate Chart</button>
-    </div>
+  <div class="button-bar">
+    <button>New Guest Reservation</button>
+    <button>New Group/Function</button>
+    <button>View Availability</button>
+    <button>Print Rate Chart</button>
+  </div>
 
-    <table class="rate-grid">
-        <tr>
-            <th>Room Type</th>
-            <th>Sat-Mar 1</th>
-            <th>Sun-Mar 2</th>
-            <th>Mon-Mar 3</th>
-            <th>Tue-Mar 4</th>
-            <th>Wed-Mar 5</th>
-            <th>Thu-Mar 6</th>
-            <th>Fri-Mar 7</th>
-            <th>Sat-Mar 8</th>
-            <th>Sun-Mar 9</th>
-            <th>Mon-Mar 10</th>
-        </tr>
-        <tr style="background-color: #e0e0e0;">
-            <td>ST2Q</td>
-            <!-- ST2Q row: first two columns -->
-            <td>
-                <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
-            </td>
-            <td>
-                <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="1">
-            </td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-        </tr>
-        <tr style="background-color: #e0e0e0;">
-            <td>ST1K</td>
-            <!-- ST1K row: first two columns -->
-            <td>
-                <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
-            </td>
-            <td>
-                <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="1">
-            </td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-        </tr>
-        <tr style="background-color: #e0e0e0;">
-            <td>Suite</td>
-            <!-- Suite row: first two columns are now focusable (not greyed out), but readonly and blank -->
-            <td>
-                <input type="number" readonly class="input-box editable" data-row="2" data-col="0">
-            </td>
-            <td>
-                <input type="number" readonly class="input-box editable" data-row="2" data-col="1">
-            </td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-            <td><input type="text" class="input-box" value="---" disabled></td>
-        </tr>
-    </table>
+  <table class="rate-grid">
+    <tr>
+      <th>Room Type</th>
+      <th>Sat-Mar 1</th>
+      <th>Sun-Mar 2</th>
+      <th>Mon-Mar 3</th>
+      <th>Tue-Mar 4</th>
+      <th>Wed-Mar 5</th>
+      <th>Thu-Mar 6</th>
+      <th>Fri-Mar 7</th>
+      <th>Sat-Mar 8</th>
+      <th>Sun-Mar 9</th>
+      <th>Mon-Mar 10</th>
+    </tr>
+    <tr style="background-color: #e0e0e0;">
+      <td>ST2Q</td>
+      <!-- ST2Q row: first two columns -->
+      <td>
+        <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
+      </td>
+      <td>
+        <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="1">
+      </td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+    </tr>
+    <tr style="background-color: #e0e0e0;">
+      <td>ST1K</td>
+      <!-- ST1K row: first two columns -->
+      <td>
+        <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
+      </td>
+      <td>
+        <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="1">
+      </td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+    </tr>
+    <tr style="background-color: #e0e0e0;">
+      <td>Suite</td>
+      <!-- Suite row: first two columns are now focusable (not greyed out), but readonly and blank -->
+      <td>
+        <input type="number" readonly class="input-box editable" data-row="2" data-col="0">
+      </td>
+      <td>
+        <input type="number" readonly class="input-box editable" data-row="2" data-col="1">
+      </td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+      <td><input type="text" class="input-box" value="---" disabled></td>
+    </tr>
+  </table>
 
-    <div class="footer-buttons">
-        <button>Previous</button>
-        <button>Next</button>
-        <button>Save</button>
-    </div>
+  <div class="footer-buttons">
+    <button>Previous</button>
+    <button>Next</button>
+    <button>Save</button>
+  </div>
 </div>
 
 <script>
-    // Retrieve the originating row number from index.html via query parameter "row"
-    const urlParams = new URLSearchParams(window.location.search);
-    const originRow = urlParams.get('row'); // e.g., "5" if coming from row 5 in index.html
-
-    // Focus the first box in the Sat-Mar 1 column and ST2Q row on page load
-    window.addEventListener('DOMContentLoaded', function() {
-        let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
-        if(firstInput) {
-            firstInput.focus();
-        }
-    });
-
-    // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
-    document.querySelectorAll('.editable').forEach(input => {
-        input.addEventListener('keydown', function(e) {
-            const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
-            if (!allowedKeys.includes(e.key)) {
-                e.preventDefault();
-            }
-            if(e.key === 'Enter') {
-                // Retrieve the room type from the first cell of the corresponding row
-                let roomType = this.closest('tr').cells[0].textContent.trim();
-                if(roomType === "Suite") {
-                    alert("Not Enough Inventory Available");
-                } else {
-                    // Create an object containing both the originating row and the selected room type
-                    let selection = { 
-                        row: originRow, 
-                        roomType: roomType 
-                    };
-                    // Store the object in localStorage (as a JSON string)
-                    localStorage.setItem('roomSelection', JSON.stringify(selection));
-                    // Alert confirmation showing both pieces of info
-                    alert("Saved Room Type: " + roomType + " for Row: " + originRow);
-                    window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
-                }
-                e.preventDefault();
-            }
-            if(e.key.startsWith('Arrow')) {
-                e.preventDefault();
-                navigateEditable(this, e.key);
-            }
-        });
-    });
-
-    // Navigation between editable cells using arrow keys.
-    // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
-    function navigateEditable(current, key) {
-        let row = parseInt(current.dataset.row);
-        let col = parseInt(current.dataset.col);
-        let newRow = row;
-        let newCol = col;
-        if (key === 'ArrowRight') {
-            if (col < 1) {
-                newCol = col + 1;
-            } else if (col === 1 && row < 2) {
-                newRow = row + 1;
-                newCol = 0;
-            }
-        } else if (key === 'ArrowLeft') {
-            if (col > 0) {
-                newCol = col - 1;
-            } else if (col === 0 && row > 0) {
-                newRow = row - 1;
-                newCol = 1;
-            }
-        } else if (key === 'ArrowDown') {
-            if (row < 2) {
-                newRow = row + 1;
-            }
-        } else if (key === 'ArrowUp') {
-            if (row > 0) {
-                newRow = row - 1;
-            }
-        }
-        let selector = `.editable[data-row="${newRow}"][data-col="${newCol}"]`;
-        let nextInput = document.querySelector(selector);
-        if (nextInput) {
-            nextInput.focus();
-        }
+  // Focus the first box in the Sat-Mar 1 column and ST2Q row on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
+    if(firstInput) {
+      firstInput.focus();
     }
+  });
+
+  // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
+  document.querySelectorAll('.editable').forEach(input => {
+    input.addEventListener('keydown', function(e) {
+      const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
+      if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+      if(e.key === 'Enter') {
+        // Retrieve the room type from the first cell of the corresponding row
+        let roomType = this.closest('tr').cells[0].textContent.trim();
+        if(roomType === "Suite") {
+          alert("Not Enough Inventory Available");
+        } else {
+          // Store the room type in localStorage so that index.html can easily retrieve it
+          localStorage.setItem('selectedRoomType', roomType);
+          // Show confirmation alert
+          alert("Successfully saved Room Type: " + roomType);
+          // Navigate back to index.html
+          window.location.href = "index.html";
+        }
+        e.preventDefault();
+      }
+      if(e.key.startsWith('Arrow')) {
+        e.preventDefault();
+        navigateEditable(this, e.key);
+      }
+    });
+  });
+
+  // Navigation between editable cells using arrow keys.
+  // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
+  function navigateEditable(current, key) {
+    let row = parseInt(current.dataset.row);
+    let col = parseInt(current.dataset.col);
+    let newRow = row;
+    let newCol = col;
+    if (key === 'ArrowRight') {
+      if (col < 1) {
+        newCol = col + 1;
+      } else if (col === 1 && row < 2) {
+        newRow = row + 1;
+        newCol = 0;
+      }
+    } else if (key === 'ArrowLeft') {
+      if (col > 0) {
+        newCol = col - 1;
+      } else if (col === 0 && row > 0) {
+        newRow = row - 1;
+        newCol = 1;
+      }
+    } else if (key === 'ArrowDown') {
+      if (row < 2) {
+        newRow = row + 1;
+      }
+    } else if (key === 'ArrowUp') {
+      if (row > 0) {
+        newRow = row - 1;
+      }
+    }
+    let selector = `.editable[data-row="${newRow}"][data-col="${newCol}"]`;
+    let nextInput = document.querySelector(selector);
+    if (nextInput) {
+      nextInput.focus();
+    }
+  }
 </script>
 
 </body>
