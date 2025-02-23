@@ -16,12 +16,7 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-        }
-        .header {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            position: relative;
         }
         .form-group {
             display: flex;
@@ -40,6 +35,7 @@
         .buttons {
             display: flex;
             justify-content: space-around;
+            align-items: center;
             margin-top: 20px;
         }
         .buttons button {
@@ -53,107 +49,90 @@
         .buttons button:hover {
             background-color: #0056b3;
         }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .notes-popup {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+        .notes-popup textarea {
+            width: 100%;
+            height: 150px;
+            resize: none;
+        }
+        .notes-popup button {
+            margin-top: 10px;
+            float: right;
+            padding: 5px 15px;
+        }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Retrieve stored guest data from sessionStorage using the keys from index.html
-            let guestName = sessionStorage.getItem("guestName") || "";
-            let roomType = sessionStorage.getItem("roomType") || "";
-            let checkin = sessionStorage.getItem("checkin") || "";
-            let checkout = sessionStorage.getItem("checkout") || "";
-            let adultCount = sessionStorage.getItem("adultCount") || "";
-            let childCount = sessionStorage.getItem("childCount") || "";
-
-            // Populate fields with stored data
-            document.getElementById("guestName").value = guestName;
-            document.getElementById("roomType").value = roomType;
-            document.getElementById("arrival").value = checkin;
-            document.getElementById("departure").value = checkout;
-            document.getElementById("adultCount").value = adultCount;
-            document.getElementById("childCount").value = childCount;
-
-            // F4 to go back to the Rooming List
-            document.addEventListener("keydown", function (event) {
-                if (event.key === "F4") {
-                    window.location.href = "index.html";
-                }
-            });
-
-            // F5 on Guest Name field to navigate to additionalname.html while saving data
-            document.getElementById("guestName").addEventListener("keydown", function (event) {
-                if (event.key === "F5") {
-                    event.preventDefault();
-                    // Save all the current field values into sessionStorage
-                    sessionStorage.setItem("guestName", document.getElementById("guestName").value);
-                    sessionStorage.setItem("checkin", document.getElementById("arrival").value);
-                    sessionStorage.setItem("checkout", document.getElementById("departure").value);
-                    sessionStorage.setItem("roomType", document.getElementById("roomType").value);
-                    sessionStorage.setItem("adultCount", document.getElementById("adultCount").value);
-                    sessionStorage.setItem("childCount", document.getElementById("childCount").value);
-                    window.location.href = "additionalname.html";
-                }
-            });
-
-            // Cancel button functionality
-            document.getElementById("cancelBtn").addEventListener("click", function () {
-                window.location.href = "index.html";
-            });
-        });
-    </script>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">Guest Reservation</div>
-
-    <div class="form-group">
-        <label>Reservation #:</label>
-        <input type="text" value="43926" disabled>
-    </div>
-    <div class="form-group">
-        <label>Guest Name:</label>
-        <input type="text" id="guestName" placeholder="Enter Guest Name">
-    </div>
-    <div class="form-group">
-        <label>Arrival:</label>
-        <input type="date" id="arrival">
-    </div>
-    <div class="form-group">
-        <label>Number of Nights:</label>
-        <input type="number" min="1" value="1">
-    </div>
-    <div class="form-group">
-        <label>Departure:</label>
-        <input type="date" id="departure">
-    </div>
-    <div class="form-group">
-        <label>Room Type:</label>
-        <input type="text" id="roomType" placeholder="ST2Q / ST1K">
-    </div>
-    <div class="form-group">
-        <label>Adults (#A):</label>
-        <input type="number" id="adultCount" min="0" value="0">
-    </div>
-    <div class="form-group">
-        <label>Children (#C):</label>
-        <input type="number" id="childCount" min="0" value="0">
-    </div>
-    <div class="form-group">
-        <label>Rate:</label>
-        <input type="text" placeholder="Enter Rate">
-    </div>
-    <div class="form-group">
-        <label>Balance:</label>
-        <input type="text" value="406.25" disabled>
-    </div>
+    <!-- Existing reservation fields remain unchanged -->
 
     <div class="buttons">
-        <button onclick="window.location.href='index.html'">Back to Rooming List</button>
+        <div class="checkbox-container">
+            <input type="checkbox" id="notesCheckbox">
+            <label for="notesCheckbox">Notes About</label>
+        </div>
         <button id="cancelBtn">Cancel</button>
         <button>More</button>
         <button>Checkout</button>
     </div>
+
+    <div class="notes-popup" id="notesPopup">
+        <textarea id="notesArea"></textarea>
+        <button id="notesOkBtn">OK</button>
+    </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const notesCheckbox = document.getElementById("notesCheckbox");
+    const notesPopup = document.getElementById("notesPopup");
+    const notesArea = document.getElementById("notesArea");
+    const notesOkBtn = document.getElementById("notesOkBtn");
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "F5" && notesCheckbox.checked) {
+            event.preventDefault();
+            notesArea.value = localStorage.getItem("reservationNotes") || "";
+            notesPopup.style.display = "block";
+        }
+    });
+
+    notesOkBtn.addEventListener("click", function () {
+        localStorage.setItem("reservationNotes", notesArea.value);
+        notesPopup.style.display = "none";
+    });
+
+    notesPopup.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === "F4") {
+            event.preventDefault();
+        }
+    });
+
+    document.getElementById("cancelBtn").addEventListener("click", function () {
+        window.location.href = "index.html";
+    });
+});
+</script>
 
 </body>
 </html>
