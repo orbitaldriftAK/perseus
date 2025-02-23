@@ -109,7 +109,7 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>ST2Q</td>
-            <!-- These two cells are now readonly and pre-filled with 8 -->
+            <!-- ST2Q row: first two columns -->
             <td>
                 <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
             </td>
@@ -127,7 +127,7 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>ST1K</td>
-            <!-- These two cells are now readonly and pre-filled with 2 -->
+            <!-- ST1K row: first two columns -->
             <td>
                 <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
             </td>
@@ -145,11 +145,12 @@
         </tr>
         <tr style="background-color: #e0e0e0;">
             <td>Suite</td>
+            <!-- Suite row: first two columns are now focusable (not greyed out), but readonly and blank -->
             <td>
-                <input type="number" class="input-box" value="---" disabled>
+                <input type="number" readonly class="input-box editable" data-row="2" data-col="0">
             </td>
             <td>
-                <input type="number" class="input-box" value="---" disabled>
+                <input type="number" readonly class="input-box editable" data-row="2" data-col="1">
             </td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -170,7 +171,15 @@
 </div>
 
 <script>
-    // Attach event listeners to editable inputs in Sat-Mar 1 and Sun-Mar 2 columns
+    // Focus the first box in the Sat-Mar 1 column and ST2Q row on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
+        if(firstInput) {
+            firstInput.focus();
+        }
+    });
+
+    // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
     document.querySelectorAll('.editable').forEach(input => {
         input.addEventListener('keydown', function(e) {
             const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
@@ -180,9 +189,12 @@
             if(e.key === 'Enter') {
                 // Retrieve the room type from the first cell of the corresponding row
                 let roomType = this.closest('tr').cells[0].textContent.trim();
-                // Store the room type in sessionStorage and update index.html via a query parameter
-                sessionStorage.setItem('selectedRoomType', roomType);
-                window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
+                if(roomType === "Suite") {
+                    alert("Not Enough Inventory Available");
+                } else {
+                    sessionStorage.setItem('selectedRoomType', roomType);
+                    window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
+                }
                 e.preventDefault();
             }
             if(e.key.startsWith('Arrow')) {
@@ -202,7 +214,7 @@
         if (key === 'ArrowRight') {
             if (col < 1) {
                 newCol = col + 1;
-            } else if (col === 1 && row < 1) {
+            } else if (col === 1 && row < 2) {
                 newRow = row + 1;
                 newCol = 0;
             }
@@ -214,7 +226,7 @@
                 newCol = 1;
             }
         } else if (key === 'ArrowDown') {
-            if (row < 1) {
+            if (row < 2) {
                 newRow = row + 1;
             }
         } else if (key === 'ArrowUp') {
