@@ -132,7 +132,7 @@
             
             // Save entire table data so that Room Type persists upon return from reservation.html
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
-            // Save the current row for focus after return
+            // Save the current row for focus after return from reservation.html
             localStorage.setItem("lastReservationRow", rowIndex);
             
             sessionStorage.setItem('guestName', guestName);
@@ -224,6 +224,8 @@
             document.getElementById("children" + i).value = "";
           }
           localStorage.removeItem("savedData");
+          // Signal roomblock.html to reset availability numbers
+          localStorage.setItem("resetAvailability", JSON.stringify({ ST2Q: 8, ST1K: 2 }));
         });
       });
 
