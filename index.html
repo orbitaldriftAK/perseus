@@ -148,7 +148,7 @@
       }
 
       function loadTableData() {
-        let savedData = JSON.parse(localStorage.getItem("savedData"));
+        let savedData = JSON.parse(sessionStorage.getItem("savedData"));
         if (savedData) {
           savedData.forEach((row, index) => {
             document.getElementById(`guest${index+1}`).value = row.guest;
