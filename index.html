@@ -192,9 +192,13 @@
                     }
                     return;
                 }
-                // Existing Enter key functionality
+                // Existing Enter key functionality, with additional behavior for #C (children) field
                 if (event.key === "Enter") {
                     event.preventDefault();
+                    if (event.target.id.startsWith("children")) {
+                        window.location.href = "roomblock.html";
+                        return;
+                    }
                     if (nextFieldId === "roomType") {
                         document.getElementById(`roomType${index}`).focus();
                     } else if (nextFieldId === "guest" && index < 10) {
