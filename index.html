@@ -59,8 +59,10 @@
           <td>RES</td>
         </tr>`;
       }
-      document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) +
-                     createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10));
+      document.write(
+        createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) +
+        createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10)
+      );
 
       function validateDates(index) {
         let checkin = document.getElementById(`checkin${index}`).value;
@@ -182,14 +184,8 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          
-          // Debugging: Log that Enter was pressed
-          console.log("Enter key pressed in Guest Name field");
-
-          // Find the row number from the field's ID
-          let rowIndex = event.target.id.match(/\d+/)[0]; // Extracts number from "guest1", "guest2", etc.
-          console.log("Row Index Detected:", rowIndex);
-
+          // Fixed date autofill logic using YYYY-MM-DD format and proper row extraction
+          let rowIndex = event.target.id.match(/\d+/)[0]; // Extract number from "guest1", "guest2", etc.
           // Auto-capitalize guest name
           let nameParts = event.target.value.split(" ");
           for (let i = 0; i < nameParts.length; i++) {
@@ -198,21 +194,18 @@
             }
           }
           event.target.value = nameParts.join(" ");
-          
-          // Debugging: Log that name was capitalized
-          console.log("Guest name after capitalization:", event.target.value);
-
           if (event.target.value.trim() !== "") {
             document.getElementById(`checkin${rowIndex}`).value = "03-01-2025";
             document.getElementById(`checkout${rowIndex}`).value = "03-03-2025";
-            
-            // Debugging: Log that dates were auto-filled
-            console.log(`Auto-filled checkin${rowIndex}:`, document.getElementById(`checkin${rowIndex}`).value);
-            console.log(`Auto-filled checkout${rowIndex}:`, document.getElementById(`checkout${rowIndex}`).value);
           }
-          
-          // **Comment out navigation temporarily to see if autofill works**
-          // navigateToNextField(event.target);
+          // Restore navigation functionality
+          if (nextFieldId === "roomType") {
+            document.getElementById(`roomType${index}`).focus();
+          } else if (nextFieldId === "guest" && index < 10) {
+            document.getElementById(`guest${index + 1}`).focus();
+          } else {
+            document.getElementById(`${nextFieldId}${index}`).focus();
+          }
         } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
           if (event.target.id.startsWith("guest")) {
             event.preventDefault();
