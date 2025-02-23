@@ -232,7 +232,7 @@
                     } else {
                         document.getElementById(`${nextFieldId}${index}`).focus();
                     }
-                    // Auto-capitalize and autofill for Guest Name field
+                    // Auto-capitalize and autofill for Guest Name field if it contains text
                     if (event.target.id.startsWith("guest")) {
                         let nameParts = event.target.value.split(" ");
                         for (let i = 0; i < nameParts.length; i++) {
@@ -241,7 +241,6 @@
                             }
                         }
                         event.target.value = nameParts.join(" ");
-                        // Autofill Check-in and Check-out fields if Guest Name is not empty
                         if (event.target.value.trim() !== "") {
                             document.getElementById(`checkin${index}`).value = "03-01-2025";
                             document.getElementById(`checkout${index}`).value = "03-03-2025";
