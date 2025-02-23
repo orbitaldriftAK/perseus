@@ -187,8 +187,8 @@
         e.preventDefault();
       }
       if(e.key === 'Enter') {
-        // Retrieve the room type from the first cell of the corresponding row
-        let roomType = this.closest('tr').cells[0].textContent.trim();
+        // Retrieve the room type text from the first cell of the corresponding row using firstElementChild
+        let roomType = this.closest('tr').firstElementChild.textContent.trim();
         if(roomType === "Suite") {
           alert("Not Enough Inventory Available");
         } else {
