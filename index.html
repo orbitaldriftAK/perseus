@@ -169,29 +169,29 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for the saved row indicator and room type.
-        let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
-        if (currentlyEditingRow) {
-          let storedRoomType = localStorage.getItem("selectedRoomType");
-          if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
-            document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
-            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
-          }
-          localStorage.removeItem("currentlyEditingRow");
-          localStorage.removeItem("selectedRoomType");
-        }
         document.addEventListener("keydown", disableTab);
       };
 
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html.
+          // If Enter is pressed on the #C (children) field:
           if (event.target.id.startsWith("children")) {
-            localStorage.setItem("savedData", JSON.stringify(getTableData()));
-            localStorage.setItem("currentlyEditingRow", index);
-            window.location.href = "roomblock.html";
-            return;
+            // Check the current row's Room Type field
+            let rowIndex = event.target.id.match(/\d+/)[0];
+            let roomTypeVal = document.getElementById("roomType" + rowIndex).value.trim();
+            if (roomTypeVal === "") {
+              localStorage.setItem("savedData", JSON.stringify(getTableData()));
+              localStorage.setItem("currentlyEditingRow", index);
+              window.location.href = "roomblock.html";
+              return;
+            } else {
+              // If Room Type is populated, simply move to the Guest Name field of the next row.
+              if (index < 10) {
+                document.getElementById("guest" + (index + 1)).focus();
+              }
+              return;
+            }
           }
           // If Enter is pressed on a Guest Name field with no text, do nothing.
           if (event.target.id.startsWith("guest") && event.target.value.trim() === "") {
@@ -199,7 +199,7 @@
           }
           // If Enter is pressed on a Guest Name field with text, auto-capitalize and autofill dates.
           if (event.target.id.startsWith("guest")) {
-            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract the row identifier.
+            let rowIndex = event.target.id.match(/\d+/)[0];
             let nameParts = event.target.value.split(" ");
             for (let i = 0; i < nameParts.length; i++) {
               if (nameParts[i].length > 0) {
@@ -210,7 +210,7 @@
             document.getElementById(`checkin${rowIndex}`).value = "2025-03-01";
             document.getElementById(`checkout${rowIndex}`).value = "2025-03-03";
           }
-          // Restore navigation functionality.
+          // Restore navigation functionality
           if (nextFieldId === "roomType") {
             document.getElementById(`roomType${index}`).focus();
           } else if (nextFieldId === "guest" && index < 10) {
