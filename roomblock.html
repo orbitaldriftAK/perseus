@@ -178,7 +178,10 @@
                 e.preventDefault();
             }
             if(e.key === 'Enter') {
-                // Redirect to index.html when Enter is pressed
+                // Retrieve the room type from the first cell of the corresponding row
+                let roomType = this.closest('tr').cells[0].textContent.trim();
+                // Store the room type in sessionStorage before redirecting
+                sessionStorage.setItem('selectedRoomType', roomType);
                 window.location.href = "index.html";
                 e.preventDefault();
             }
