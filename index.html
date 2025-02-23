@@ -148,6 +148,28 @@
             };
 
             function OnEnter(event, index, nextFieldId) {
+                // Left/Right arrow key navigation within the same row
+                if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                    event.preventDefault();
+                    const fieldOrder = ["guest", "checkin", "checkout", "adults", "children", "roomType"];
+                    const currentId = event.target.id;
+                    const match = currentId.match(/^([a-zA-Z]+)(\d+)$/);
+                    if (match) {
+                        const prefix = match[1];
+                        const rowNum = match[2];
+                        const pos = fieldOrder.indexOf(prefix);
+                        if (event.key === "ArrowLeft" && pos > 0) {
+                            const newFieldId = fieldOrder[pos - 1] + rowNum;
+                            document.getElementById(newFieldId).focus();
+                        } else if (event.key === "ArrowRight" && pos < fieldOrder.length - 1) {
+                            const newFieldId = fieldOrder[pos + 1] + rowNum;
+                            document.getElementById(newFieldId).focus();
+                        }
+                    }
+                    return;
+                }
+
+                // Existing Enter key functionality
                 if (event.key === "Enter") {
                     event.preventDefault();
                     if (nextFieldId === "roomType") {
