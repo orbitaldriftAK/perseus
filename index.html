@@ -148,6 +148,17 @@
             };
 
             function OnEnter(event, index, nextFieldId) {
+                // Up/Down arrow navigation for Guest Name fields only
+                if (event.target.id.startsWith("guest") && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
+                    event.preventDefault();
+                    let rowIndex = parseInt(event.target.id.replace("guest", ""));
+                    if (event.key === "ArrowUp" && rowIndex > 1) {
+                        document.getElementById(`guest${rowIndex - 1}`).focus();
+                    } else if (event.key === "ArrowDown" && rowIndex < 10) {
+                        document.getElementById(`guest${rowIndex + 1}`).focus();
+                    }
+                    return;
+                }
                 // Left/Right arrow key navigation within the same row
                 if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
                     event.preventDefault();
@@ -168,7 +179,6 @@
                     }
                     return;
                 }
-
                 // Existing Enter key functionality
                 if (event.key === "Enter") {
                     event.preventDefault();
