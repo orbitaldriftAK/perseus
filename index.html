@@ -91,7 +91,7 @@
       function validateRoomType(event, index) {
         if (event.key === "F5") {
           event.preventDefault();
-          // Save the currently editing row before leaving.
+          // Save the currently editing row identifier to localStorage
           localStorage.setItem("currentlyEditingRow", index);
           window.location.href = "roomblock.html";
           return;
@@ -169,13 +169,13 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for the saved indicator "currentlyEditingRow" and room type.
+        // Immediately check localStorage for a saved room type and row indicator.
         let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
         if (currentlyEditingRow) {
           let storedRoomType = localStorage.getItem("roomType");
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
-            alert("Successfully loaded Room Type " + storedRoomType + " into the correct previously selected row.");
+            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct previously selected row.");
           }
           localStorage.removeItem("currentlyEditingRow");
         }
@@ -185,7 +185,7 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If Enter is pressed on the #C (children) field, save current data, save the row indicator, and go to roomblock.html.
+          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html.
           if (event.target.id.startsWith("children")) {
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
             localStorage.setItem("currentlyEditingRow", index);
