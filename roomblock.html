@@ -189,10 +189,14 @@
             if(e.key === 'Enter') {
                 // Retrieve the room type from the first cell of the corresponding row
                 let roomType = this.closest('tr').cells[0].textContent.trim();
+                // For Suite, show an alert and do not navigate away
                 if(roomType === "Suite") {
                     alert("Not Enough Inventory Available");
                 } else {
+                    // Store the room type in sessionStorage so index.html can easily find and use it
                     sessionStorage.setItem('selectedRoomType', roomType);
+                    // Alert confirmation displaying the saved room type
+                    alert("Room type '" + roomType + "' saved!");
                     window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
                 }
                 e.preventDefault();
