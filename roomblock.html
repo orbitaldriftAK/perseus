@@ -58,6 +58,15 @@
             width: 40px;
             text-align: center;
         }
+        /* Remove spinner arrows for number inputs */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
         .footer-buttons {
             display: flex;
             justify-content: space-between;
@@ -69,7 +78,7 @@
 
 <div class="container">
     <div class="header">
-        <div>Date: <input type="date"></div>
+        <div>Date: <input type="date" value="2025-03-01"></div>
         <div>ID: <input type="text" placeholder="ID"></div>
     </div>
 
@@ -85,61 +94,53 @@
             <th>Room Type</th>
             <th>Sat-Mar 1</th>
             <th>Sun-Mar 2</th>
-            <th>Day 1</th>
-            <th>Day 2</th>
             <th>Mon-Mar 3</th>
             <th>Tue-Mar 4</th>
             <th>Wed-Mar 5</th>
-            <th>Day 6</th>
-            <th>Day 7</th>
-            <th>Day 8</th>
-            <th>Day 9</th>
-            <th>Day 10</th>
+            <th>Thu-Mar 6</th>
+            <th>Fri-Mar 7</th>
+            <th>Sat-Mar 8</th>
+            <th>Sun-Mar 9</th>
+            <th>Mon-Mar 10</th>
         </tr>
-        <tr>
+        <tr style="background-color: #e0e0e0;">
             <td>QQ</td>
-            <td><input type="number" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
+            <td><input type="number" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
         </tr>
-        <tr>
+        <tr style="background-color: #e0e0e0;">
             <td>ST</td>
-            <td><input type="number" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
+            <td><input type="number" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
         </tr>
-        <tr>
+        <tr style="background-color: #e0e0e0;">
             <td>Suite</td>
-            <td><input type="number" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
-            <td><input type="text" class="input-box"></td>
+            <td><input type="number" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
+            <td><input type="text" class="input-box" value="---" disabled></td>
         </tr>
     </table>
 
