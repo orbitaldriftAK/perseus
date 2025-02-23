@@ -171,6 +171,10 @@
 </div>
 
 <script>
+    // Retrieve the originating row number from index.html via query parameter "row"
+    const urlParams = new URLSearchParams(window.location.search);
+    const originRow = urlParams.get('row'); // e.g., "5" if coming from row 5 in index.html
+
     // Focus the first box in the Sat-Mar 1 column and ST2Q row on page load
     window.addEventListener('DOMContentLoaded', function() {
         let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
@@ -189,14 +193,18 @@
             if(e.key === 'Enter') {
                 // Retrieve the room type from the first cell of the corresponding row
                 let roomType = this.closest('tr').cells[0].textContent.trim();
-                // For Suite, show an alert and do not navigate away
                 if(roomType === "Suite") {
                     alert("Not Enough Inventory Available");
                 } else {
-                    // Store the room type in sessionStorage so index.html can easily find and use it
-                    sessionStorage.setItem('selectedRoomType', roomType);
-                    // Alert confirmation displaying the saved room type
-                    alert("Room type '" + roomType + "' saved!");
+                    // Create an object containing both the originating row and the selected room type
+                    let selection = { 
+                        row: originRow, 
+                        roomType: roomType 
+                    };
+                    // Store the object in localStorage (as a JSON string)
+                    localStorage.setItem('roomSelection', JSON.stringify(selection));
+                    // Alert confirmation showing both pieces of info
+                    alert("Saved Room Type: " + roomType + " for Row: " + originRow);
                     window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
                 }
                 e.preventDefault();
