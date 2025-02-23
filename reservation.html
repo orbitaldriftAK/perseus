@@ -150,14 +150,14 @@
                     event.preventDefault();
                     notesArea.value = localStorage.getItem("notes-" + guestName) || "";
                     notesPopup.style.display = "block";
-                    notesArea.focus(); // Auto-focus on text entry
+                    notesArea.focus(); // Auto-focus added here
                 }
             });
 
             notesOkBtn.addEventListener("click", function () {
                 localStorage.setItem("notes-" + guestName, notesArea.value);
                 notesPopup.style.display = "none";
-                loadNotesIndicator(); // Ensure consistent X display per guest
+                loadNotesIndicator(); // Ensures consistent "X" indicator per guest
             });
 
             notesPopup.addEventListener("keydown", function(event){
@@ -173,11 +173,45 @@
     <div class="header">Guest Reservation</div>
 
     <div class="form-group">
+        <label>Reservation #:</label>
+        <input type="text" value="43926" disabled>
+    </div>
+    <div class="form-group">
         <label>Guest Name:</label>
         <input type="text" id="guestName" placeholder="Enter Guest Name">
     </div>
-
-    <!-- Other form fields remain unchanged as previously defined -->
+    <div class="form-group">
+        <label>Arrival:</label>
+        <input type="date" id="arrival">
+    </div>
+    <div class="form-group">
+        <label>Number of Nights:</label>
+        <input type="number" min="1" value="1">
+    </div>
+    <div class="form-group">
+        <label>Departure:</label>
+        <input type="date" id="departure">
+    </div>
+    <div class="form-group">
+        <label>Room Type:</label>
+        <input type="text" id="roomType" placeholder="ST2Q / ST1K">
+    </div>
+    <div class="form-group">
+        <label>Adults (#A):</label>
+        <input type="number" id="adultCount" min="0" value="0">
+    </div>
+    <div class="form-group">
+        <label>Children (#C):</label>
+        <input type="number" id="childCount" min="0" value="0">
+    </div>
+    <div class="form-group">
+        <label>Rate:</label>
+        <input type="text" placeholder="Enter Rate">
+    </div>
+    <div class="form-group">
+        <label>Balance:</label>
+        <input type="text" value="406.25" disabled>
+    </div>
 
     <div class="buttons">
         <input type="text" readonly id="notesBox" class="notes-box">
