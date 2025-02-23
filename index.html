@@ -44,7 +44,7 @@
       <label style="font-weight: bold; margin-right: 5px;">Arrival Date</label>
       <input type="text" class="readonly-field" readonly value="03-01-2025" style="width: auto;">
     </div>
-    <!-- Clear Button Added -->
+    <!-- Clear Button -->
     <button id="clearButton">Clear</button>
   </div>
   <table>
@@ -130,6 +130,9 @@
             let adultCount = document.getElementById(`adults${rowIndex}`).value;
             let childCount = document.getElementById(`children${rowIndex}`).value;
             
+            // Save entire table data to localStorage so room type persists after returning from reservation.html
+            localStorage.setItem("savedData", JSON.stringify(getTableData()));
+            
             sessionStorage.setItem('guestName', guestName);
             sessionStorage.setItem('checkin', checkin);
             sessionStorage.setItem('checkout', checkout);
@@ -186,6 +189,11 @@
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
             alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
+            // After loading, focus on the Guest Name field of the next row.
+            let nextRow = parseInt(currentlyEditingRow) + 1;
+            if (document.getElementById("guest" + nextRow)) {
+              document.getElementById("guest" + nextRow).focus();
+            }
           }
           localStorage.removeItem("currentlyEditingRow");
           localStorage.removeItem("selectedRoomType");
