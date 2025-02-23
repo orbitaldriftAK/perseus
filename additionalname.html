@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Additional Guest Names</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #C0C0C0;
+            text-align: center;
+            padding: 20px;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        .table-container {
+            display: flex;
+            justify-content: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            background: white;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            background: transparent;
+        }
+        input:focus {
+            outline: none;
+            background: lightyellow;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Additional Guest Names</h2>
+
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>Guest Name</th>
+                <th>Room</th>
+                <th>Building</th>
+                <th>Arrival</th>
+                <th>Departure</th>
+                <th>Status</th>
+            </tr>
+            <script>
+                let numRows = 5; // Set the number of rows
+                function createRow(index) {
+                    return `<tr>
+                        <td><input type="text" id="guest${index}" onkeydown="navigate(event, ${index}, 'guest')"></td>
+                        <td><input type="text" id="room${index}" onkeydown="navigate(event, ${index}, 'room')"></td>
+                        <td><input type="text" id="building${index}" onkeydown="navigate(event, ${index}, 'building')"></td>
+                        <td><input type="text" id="arrival${index}" onkeydown="navigate(event, ${index}, 'arrival')"></td>
+                        <td><input type="text" id="departure${index}" onkeydown="navigate(event, ${index}, 'departure')"></td>
+                        <td><input type="text" id="status${index}" onkeydown="navigate(event, ${index}, 'status')"></td>
+                    </tr>`;
+                }
+                
+                document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5));
+
+                function navigate(event, row, field) {
+                    let fields = ["guest", "room", "building", "arrival", "departure", "status"];
+                    let currentIndex = fields.indexOf(field);
+
+                    if (event.key === "ArrowRight" && currentIndex < fields.length - 1) {
+                        document.getElementById(`${fields[currentIndex + 1]}${row}`).focus();
+                    } else if (event.key === "ArrowLeft" && currentIndex > 0) {
+                        document.getElementById(`${fields[currentIndex - 1]}${row}`).focus();
+                    } else if (event.key === "ArrowDown" && row < numRows) {
+                        document.getElementById(`${field}${row + 1}`).focus();
+                    } else if (event.key === "ArrowUp" && row > 1) {
+                        document.getElementById(`${field}${row - 1}`).focus();
+                    } else if (event.key === "Enter") {
+                        saveData();
+                    } else if (event.key === "F4") {
+                        event.preventDefault();
+                        loadData();
+                        window.location.href = "reservation.html";
+                    }
+                }
+
+                function saveData() {
+                    let data = [];
+                    for (let i = 1; i <= numRows; i++) {
+                        data.push({
+                            guest: document.getElementById(`guest${i}`).value,
+                            room: document.getElementById(`room${i}`).value,
+                            building: document.getElementById(`building${i}`).value,
+                            arrival: document.getElementById(`arrival${i}`).value,
+                            departure: document.getElementById(`departure${i}`).value,
+                            status: document.getElementById(`status${i}`).value
+                        });
+                    }
+                    sessionStorage.setItem("guestList", JSON.stringify(data));
+                }
+
+                function loadData() {
+                    let savedData = JSON.parse(sessionStorage.getItem("guestList"));
+                    if (savedData) {
+                        savedData.forEach((row, index) => {
+                            document.getElementById(`guest${index+1}`).value = row.guest;
+                            document.getElementById(`room${index+1}`).value = row.room;
+                            document.getElementById(`building${index+1}`).value = row.building;
+                            document.getElementById(`arrival${index+1}`).value = row.arrival;
+                            document.getElementById(`departure${index+1}`).value = row.departure;
+                            document.getElementById(`status${index+1}`).value = row.status;
+                        });
+                    }
+                }
+
+                window.onload = loadData;
+            </script>
+        </table>
+    </div>
+
+</body>
+</html>
