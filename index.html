@@ -91,7 +91,7 @@
       function validateRoomType(event, index) {
         if (event.key === "F5") {
           event.preventDefault();
-          // Store the row number for later retrieval using localStorage
+          // Store the row identifier in localStorage before leaving index.html
           localStorage.setItem("roomTypeRow", index);
           window.location.href = "roomblock.html";
           return;
@@ -169,13 +169,13 @@
 
       window.onload = () => {
         loadTableData();
-        // Immediately check localStorage for a stored room type and row number.
+        // Immediately check localStorage for a stored room type and the specific row indicator.
         let roomTypeRow = localStorage.getItem("roomTypeRow");
         if (roomTypeRow) {
           let storedRoomType = localStorage.getItem("roomType");
           if (storedRoomType && document.getElementById("roomType" + roomTypeRow)) {
             document.getElementById("roomType" + roomTypeRow).value = storedRoomType;
-            alert("Loaded Room Type: " + storedRoomType + " into Row: " + roomTypeRow + " successfully!");
+            alert("Loaded Room Type: " + storedRoomType + " successfully into the correct row!");
           }
           localStorage.removeItem("roomTypeRow");
         }
@@ -185,7 +185,7 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html
+          // If Enter is pressed on the #C (children) field, save current data and go to roomblock.html.
           if (event.target.id.startsWith("children")) {
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
             window.location.href = "roomblock.html";
@@ -197,7 +197,7 @@
           }
           // If Enter is pressed on a Guest Name field with text, auto-capitalize and autofill dates.
           if (event.target.id.startsWith("guest")) {
-            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract number from "guest1", "guest2", etc.
+            let rowIndex = event.target.id.match(/\d+/)[0]; // Extract the internal row identifier.
             let nameParts = event.target.value.split(" ");
             for (let i = 0; i < nameParts.length; i++) {
               if (nameParts[i].length > 0) {
@@ -208,7 +208,7 @@
             document.getElementById(`checkin${rowIndex}`).value = "2025-03-01";
             document.getElementById(`checkout${rowIndex}`).value = "2025-03-03";
           }
-          // Restore navigation functionality
+          // Restore navigation functionality.
           if (nextFieldId === "roomType") {
             document.getElementById(`roomType${index}`).focus();
           } else if (nextFieldId === "guest" && index < 10) {
