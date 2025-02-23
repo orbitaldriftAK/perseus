@@ -26,6 +26,14 @@
       background-color: #f0f0f0;
       display: inline-block;
     }
+    /* Style for the Clear button */
+    #clearButton {
+      margin: 10px auto;
+      display: block;
+      padding: 8px 12px;
+      font-size: 1em;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -36,6 +44,8 @@
       <label style="font-weight: bold; margin-right: 5px;">Arrival Date</label>
       <input type="text" class="readonly-field" readonly value="03-01-2025" style="width: auto;">
     </div>
+    <!-- Clear Button Added -->
+    <button id="clearButton">Clear</button>
   </div>
   <table>
     <tr>
@@ -182,6 +192,17 @@
         }
         document.addEventListener("keydown", disableTab);
       };
+
+      // Clear Button functionality
+      document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("clearButton").addEventListener("click", function() {
+          for (let i = 1; i <= 10; i++) {
+            document.getElementById("guest" + i).value = "";
+            document.getElementById("roomType" + i).value = "";
+          }
+          localStorage.removeItem("savedData");
+        });
+      });
 
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
