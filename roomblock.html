@@ -171,8 +171,28 @@
 </div>
 
 <script>
-  // Focus the first box in the Sat-Mar 1 column and ST2Q row on page load
+  // On page load, set up room availability values from localStorage (or defaults)
   window.addEventListener('DOMContentLoaded', function() {
+    // Retrieve current availability from localStorage or set defaults if missing
+    let st2qAvail = localStorage.getItem('ST2Q_availability');
+    let st1kAvail = localStorage.getItem('ST1K_availability');
+    if (st2qAvail === null) {
+      st2qAvail = 8;
+      localStorage.setItem('ST2Q_availability', st2qAvail);
+    }
+    if (st1kAvail === null) {
+      st1kAvail = 2;
+      localStorage.setItem('ST1K_availability', st1kAvail);
+    }
+    // Update the ST2Q row (data-row="0") input boxes
+    document.querySelectorAll('.editable[data-row="0"]').forEach(function(input) {
+      input.value = st2qAvail;
+    });
+    // Update the ST1K row (data-row="1") input boxes
+    document.querySelectorAll('.editable[data-row="1"]').forEach(function(input) {
+      input.value = st1kAvail;
+    });
+    // Focus the first box in the Sat-Mar 1 column and ST2Q row
     let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
     if(firstInput) {
       firstInput.focus();
@@ -187,14 +207,25 @@
         e.preventDefault();
       }
       if(e.key === 'Enter') {
-        // Retrieve the room type text from the first cell of the corresponding row using firstElementChild
+        // Retrieve the room type text from the first cell of the corresponding row
         let roomType = this.closest('tr').firstElementChild.textContent.trim();
         if(roomType === "Suite") {
           alert("Not Enough Inventory Available");
         } else {
-          // Store exactly the room type under the key "selectedRoomType" in localStorage
+          // Determine the localStorage key based on room type
+          let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
+          // Retrieve current availability, subtract 1, and update
+          let currentAvail = parseInt(localStorage.getItem(availKey), 10);
+          currentAvail = currentAvail - 1;
+          localStorage.setItem(availKey, currentAvail);
+          // Update both input boxes in the corresponding row with the new availability
+          let rowIndex = (roomType === "ST2Q") ? "0" : "1";
+          document.querySelectorAll(`.editable[data-row="${rowIndex}"]`).forEach(function(input) {
+            input.value = currentAvail;
+          });
+          // Save exactly the room type under the key "selectedRoomType"
           localStorage.setItem('selectedRoomType', roomType);
-          // Show confirmation alert exactly as required
+          // Show confirmation alert
           alert("Successfully saved Room Type: " + roomType);
           // Navigate back to index.html
           window.location.href = "index.html";
@@ -211,8 +242,8 @@
   // Navigation between editable cells using arrow keys.
   // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
   function navigateEditable(current, key) {
-    let row = parseInt(current.dataset.row);
-    let col = parseInt(current.dataset.col);
+    let row = parseInt(current.dataset.row, 10);
+    let col = parseInt(current.dataset.col, 10);
     let newRow = row;
     let newCol = col;
     if (key === 'ArrowRight') {
