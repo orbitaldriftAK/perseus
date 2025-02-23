@@ -72,6 +72,10 @@
             justify-content: space-between;
             margin-top: 15px;
         }
+        /* Highlight editable cells on focus */
+        .input-box.editable:focus {
+            outline: 2px solid blue;
+        }
     </style>
 </head>
 <body>
@@ -104,15 +108,14 @@
             <th>Mon-Mar 10</th>
         </tr>
         <tr style="background-color: #e0e0e0;">
-            <td>QQ</td>
-            <!-- Editable: Sat-Mar 1 (data-col="0") and Sun-Mar 2 (data-col="1") -->
+            <td>ST2Q</td>
+            <!-- These two cells are now readonly and pre-filled with 8 -->
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="0" data-col="0">
+                <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
             </td>
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="0" data-col="1">
+                <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="1">
             </td>
-            <!-- Remaining non-editable cells -->
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -123,12 +126,13 @@
             <td><input type="text" class="input-box" value="---" disabled></td>
         </tr>
         <tr style="background-color: #e0e0e0;">
-            <td>ST</td>
+            <td>ST1K</td>
+            <!-- These two cells are now readonly and pre-filled with 2 -->
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="1" data-col="0">
+                <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
             </td>
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="1" data-col="1">
+                <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="1">
             </td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -142,10 +146,10 @@
         <tr style="background-color: #e0e0e0;">
             <td>Suite</td>
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="2" data-col="0">
+                <input type="number" class="input-box" value="---" disabled>
             </td>
             <td>
-                <input type="number" class="input-box editable" value="---" data-row="2" data-col="1">
+                <input type="number" class="input-box" value="---" disabled>
             </td>
             <td><input type="text" class="input-box" value="---" disabled></td>
             <td><input type="text" class="input-box" value="---" disabled></td>
@@ -168,31 +172,16 @@
 <script>
     // Attach event listeners to editable inputs in Sat-Mar 1 and Sun-Mar 2 columns
     document.querySelectorAll('.editable').forEach(input => {
-        input.dataset.committed = "false";
-        input.addEventListener('focus', function() {
-            if(this.value === '---') {
-                this.value = '';
-            }
-            this.dataset.committed = "false";
-        });
-        input.addEventListener('blur', function() {
-            if(this.dataset.committed !== "true" || this.value === '') {
-                this.value = '---';
-            }
-        });
         input.addEventListener('keydown', function(e) {
-            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Delete', 'Enter'];
-            // Allow only numeric input (digits) or allowed control keys
-            if (!allowedKeys.includes(e.key) && !/^\d$/.test(e.key)) {
+            const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
+            if (!allowedKeys.includes(e.key)) {
                 e.preventDefault();
             }
-            // If Enter is pressed, commit the value
             if(e.key === 'Enter') {
-                this.dataset.committed = "true";
-                this.blur();
+                // Redirect to index.html when Enter is pressed
+                window.location.href = "index.html";
                 e.preventDefault();
             }
-            // Handle arrow key navigation between editable boxes
             if(e.key.startsWith('Arrow')) {
                 e.preventDefault();
                 navigateEditable(this, e.key);
@@ -210,7 +199,7 @@
         if (key === 'ArrowRight') {
             if (col < 1) {
                 newCol = col + 1;
-            } else if (col === 1 && row < 2) {
+            } else if (col === 1 && row < 1) {
                 newRow = row + 1;
                 newCol = 0;
             }
@@ -222,7 +211,7 @@
                 newCol = 1;
             }
         } else if (key === 'ArrowDown') {
-            if (row < 2) {
+            if (row < 1) {
                 newRow = row + 1;
             }
         } else if (key === 'ArrowUp') {
