@@ -180,9 +180,9 @@
             if(e.key === 'Enter') {
                 // Retrieve the room type from the first cell of the corresponding row
                 let roomType = this.closest('tr').cells[0].textContent.trim();
-                // Store the room type in sessionStorage before redirecting
+                // Store the room type in sessionStorage and update index.html via a query parameter
                 sessionStorage.setItem('selectedRoomType', roomType);
-                window.location.href = "index.html";
+                window.location.href = "index.html?roomType=" + encodeURIComponent(roomType);
                 e.preventDefault();
             }
             if(e.key.startsWith('Arrow')) {
