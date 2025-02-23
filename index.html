@@ -59,10 +59,8 @@
           <td>RES</td>
         </tr>`;
       }
-      document.write(
-        createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) +
-        createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10)
-      );
+      document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5) +
+                     createRow(6) + createRow(7) + createRow(8) + createRow(9) + createRow(10));
 
       function validateDates(index) {
         let checkin = document.getElementById(`checkin${index}`).value;
@@ -119,7 +117,7 @@
             let roomType = document.getElementById(`roomType${rowIndex}`).value;
             let adultCount = document.getElementById(`adults${rowIndex}`).value;
             let childCount = document.getElementById(`children${rowIndex}`).value;
-
+            
             sessionStorage.setItem('guestName', guestName);
             sessionStorage.setItem('checkin', checkin);
             sessionStorage.setItem('checkout', checkout);
@@ -184,35 +182,38 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If in Guest Name field and it contains text, auto-capitalize and immediately autofill dates
-          if (event.target.id.startsWith("guest")) {
-            let nameParts = event.target.value.split(" ");
-            for (let i = 0; i < nameParts.length; i++) {
-              if (nameParts[i].length > 0) {
-                nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
-              }
+          
+          // Debugging: Log that Enter was pressed
+          console.log("Enter key pressed in Guest Name field");
+
+          // Find the row number from the field's ID
+          let rowIndex = event.target.id.match(/\d+/)[0]; // Extracts number from "guest1", "guest2", etc.
+          console.log("Row Index Detected:", rowIndex);
+
+          // Auto-capitalize guest name
+          let nameParts = event.target.value.split(" ");
+          for (let i = 0; i < nameParts.length; i++) {
+            if (nameParts[i].length > 0) {
+              nameParts[i] = nameParts[i].charAt(0).toUpperCase() + nameParts[i].slice(1).toLowerCase();
             }
-            event.target.value = nameParts.join(" ");
-            if (event.target.value.trim() !== "") {
-              let rowNum = event.target.id.replace("guest", "");
-              console.log("Row number is:", rowNum);
-              document.getElementById(`checkin${rowNum}`).value = "03-01-2025";
-              document.getElementById(`checkout${rowNum}`).value = "03-03-2025";
-            }
           }
-          if (event.target.id.startsWith("children")) {
-            window.location.href = "roomblock.html";
-            return;
+          event.target.value = nameParts.join(" ");
+          
+          // Debugging: Log that name was capitalized
+          console.log("Guest name after capitalization:", event.target.value);
+
+          if (event.target.value.trim() !== "") {
+            document.getElementById(`checkin${rowIndex}`).value = "03-01-2025";
+            document.getElementById(`checkout${rowIndex}`).value = "03-03-2025";
+            
+            // Debugging: Log that dates were auto-filled
+            console.log(`Auto-filled checkin${rowIndex}:`, document.getElementById(`checkin${rowIndex}`).value);
+            console.log(`Auto-filled checkout${rowIndex}:`, document.getElementById(`checkout${rowIndex}`).value);
           }
-          if (nextFieldId === "roomType") {
-            document.getElementById(`roomType${index}`).focus();
-          } else if (nextFieldId === "guest" && index < 10) {
-            document.getElementById(`guest${index + 1}`).focus();
-          } else {
-            document.getElementById(`${nextFieldId}${index}`).focus();
-          }
-        }
-        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+          
+          // **Comment out navigation temporarily to see if autofill works**
+          // navigateToNextField(event.target);
+        } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
           if (event.target.id.startsWith("guest")) {
             event.preventDefault();
             let rowIndex = parseInt(event.target.id.replace("guest", ""));
@@ -228,8 +229,7 @@
             event.preventDefault();
             return;
           }
-        }
-        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
           event.preventDefault();
           const fieldOrder = ["guest", "checkin", "checkout", "adults", "children", "roomType"];
           const currentId = event.target.id;
