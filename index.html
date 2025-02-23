@@ -195,8 +195,8 @@
           }
           event.target.value = nameParts.join(" ");
           if (event.target.value.trim() !== "") {
-            document.getElementById(`checkin${rowIndex}`).value = "03-01-2025";
-            document.getElementById(`checkout${rowIndex}`).value = "03-03-2025";
+            document.getElementById(`checkin${rowIndex}`).value = "2025-03-01";
+            document.getElementById(`checkout${rowIndex}`).value = "2025-03-03";
           }
           // Restore navigation functionality
           if (nextFieldId === "roomType") {
