@@ -76,6 +76,24 @@
     .input-box.editable:focus {
       outline: 2px solid blue;
     }
+    /* Custom modal for "Not Enough Inventory Available" */
+    #custom-alert {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px solid black;
+      padding: 20px;
+      z-index: 10000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+    #custom-alert button {
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
   </style>
 </head>
 <body>
@@ -170,6 +188,12 @@
   </div>
 </div>
 
+<!-- Custom modal for "Not Enough Inventory Available" -->
+<div id="custom-alert">
+  <p>Not Enough Inventory Available</p>
+  <button id="custom-alert-ok">OK</button>
+</div>
+
 <script>
   // On page load, set up room availability values from localStorage (or defaults)
   window.addEventListener('DOMContentLoaded', function() {
@@ -199,6 +223,17 @@
     }
   });
 
+  // Function to show the custom alert modal
+  function showCustomAlert() {
+    const modal = document.getElementById('custom-alert');
+    modal.style.display = 'block';
+  }
+
+  // Attach event listener to the OK button in the custom alert modal
+  document.getElementById('custom-alert-ok').addEventListener('click', function() {
+    document.getElementById('custom-alert').style.display = 'none';
+  });
+
   // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
   document.querySelectorAll('.editable').forEach(input => {
     input.addEventListener('keydown', function(e) {
@@ -209,13 +244,14 @@
       if(e.key === 'Enter') {
         // Retrieve the room type text from the first cell of the corresponding row
         let roomType = this.closest('tr').firstElementChild.textContent.trim();
+        // If the row is Suite, show custom alert and do nothing else
         if(roomType === "Suite") {
-          alert("Not Enough Inventory Available");
+          showCustomAlert();
         } else {
           // New validation: Check the current displayed number in the focused box
           let currentBoxValue = parseInt(this.value, 10);
           if(currentBoxValue === 0) {
-            alert("Not Enough Inventory Available");
+            showCustomAlert();
           } else {
             // Determine the localStorage key based on room type
             let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
@@ -230,9 +266,7 @@
             });
             // Save exactly the room type under the key "selectedRoomType"
             localStorage.setItem('selectedRoomType', roomType);
-            // Show confirmation alert
-            alert("Successfully saved Room Type: " + roomType);
-            // Navigate back to index.html
+            // (No confirmation pop-up here)
             window.location.href = "index.html";
           }
         }
