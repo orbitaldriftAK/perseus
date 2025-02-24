@@ -158,4 +158,122 @@
                 if (event.key === "F5") {
                     event.preventDefault();
                     // Use the current guest name to load notes.
-                    notesArea.value = localStorage.getItem("notes-" + getGuestN
+                    notesArea.value = localStorage.getItem("notes-" + getGuestName()) || "";
+                    notesPopup.style.display = "block";
+                    notesArea.focus();
+                }
+            });
+
+            notesOkBtn.addEventListener("click", function () {
+                // Save notes using the current guest name.
+                localStorage.setItem("notes-" + getGuestName(), notesArea.value);
+                notesPopup.style.display = "none";
+                loadNotesIndicator();
+            });
+
+            notesPopup.addEventListener("keydown", function(event){
+                if(event.key === "Enter" || event.key === "F4") {
+                    event.preventDefault();
+                }
+            });
+
+            // CLEAR NOTES WHEN INDEX.HTML CLEAR BUTTON PRESSED
+            window.addEventListener("storage", function(event) {
+                if (event.key === "clearAllNotes" && (event.newValue === "true" || event.newValue === "all")) {
+                    // Clear all saved notes for every row
+                    let keysToRemove = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        let key = localStorage.key(i);
+                        if (key.startsWith("notes-")) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    keysToRemove.forEach(function(key) {
+                        localStorage.removeItem(key);
+                    });
+                    notesBox.value = "";
+                    notesArea.value = "";
+                    localStorage.removeItem("clearAllNotes");
+                }
+            });
+
+            // If the clearAllNotes flag is set on page load, clear notes immediately for all rows.
+            if (localStorage.getItem("clearAllNotes") === "true" || localStorage.getItem("clearAllNotes") === "all") {
+                let keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    let key = localStorage.key(i);
+                    if (key.startsWith("notes-")) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(function(key) {
+                    localStorage.removeItem(key);
+                });
+                notesBox.value = "";
+                notesArea.value = "";
+                localStorage.removeItem("clearAllNotes");
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="header">Guest Reservation</div>
+
+    <div class="form-group">
+        <label>Reservation #:</label>
+        <input type="text" value="43926" disabled>
+    </div>
+    <div class="form-group">
+        <label>Guest Name:</label>
+        <input type="text" id="guestName" placeholder="Enter Guest Name">
+    </div>
+    <div class="form-group">
+        <label>Arrival:</label>
+        <input type="date" id="arrival">
+    </div>
+    <div class="form-group">
+        <label>Number of Nights:</label>
+        <input type="number" min="1" value="1">
+    </div>
+    <div class="form-group">
+        <label>Departure:</label>
+        <input type="date" id="departure">
+    </div>
+    <div class="form-group">
+        <label>Room Type:</label>
+        <input type="text" id="roomType" placeholder="ST2Q / ST1K">
+    </div>
+    <div class="form-group">
+        <label>Adults (#A):</label>
+        <input type="number" id="adultCount" min="0" value="0">
+    </div>
+    <div class="form-group">
+        <label>Children (#C):</label>
+        <input type="number" id="childCount" min="0" value="0">
+    </div>
+    <div class="form-group">
+        <label>Rate:</label>
+        <input type="text" placeholder="Enter Rate">
+    </div>
+    <div class="form-group">
+        <label>Balance:</label>
+        <input type="text" value="406.25" disabled>
+    </div>
+
+    <div class="buttons">
+        <input type="text" readonly id="notesBox" class="notes-box">
+        <label for="notesBox">Notes About</label>
+        <button onclick="window.location.href='index.html'">Back to Rooming List</button>
+        <button id="cancelBtn">Cancel</button>
+        <button>More</button>
+        <button>Checkout</button>
+    </div>
+
+    <div class="notes-popup" id="notesPopup">
+        <textarea id="notesArea" placeholder="Enter your notes here..."></textarea>
+        <button id="notesOkBtn">OK</button>
+    </div>
+</div>
+</body>
+</html>
