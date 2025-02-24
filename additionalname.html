@@ -54,9 +54,12 @@
         let numRows = 5; // Set the number of additional guest rows
 
         // Generate a unique identifier for the index.html row.
-        // This uniqueRowId is taken from the URL query parameter "row".
-        // If not provided, it defaults to a unique string ("unique_default_row").
-        const uniqueRowId = (new URLSearchParams(window.location.search)).get("row") || "unique_default_row";
+        // Now, uniqueRowId is obtained by checking for a URL parameter "row".
+        // If not present, it checks localStorage for "lastReservationRow" (set by index.html).
+        // If neither is available, it defaults to "default".
+        const uniqueRowId = (new URLSearchParams(window.location.search)).get("row") ||
+                              localStorage.getItem("lastReservationRow") ||
+                              "default";
 
         function createRow(index) {
           return `<tr>
