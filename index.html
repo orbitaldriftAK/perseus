@@ -227,8 +227,11 @@
           // Reset room availability numbers in roomblock.html to their original values.
           localStorage.setItem("ST2Q_availability", 8);
           localStorage.setItem("ST1K_availability", 2);
-          // Signal reservation.html to clear all notes and indicators permanently.
-          localStorage.setItem("clearAllNotes", "true");
+          // Signal reservation.html to permanently clear all notes for all rows.
+          localStorage.setItem("clearAllNotes", "all");
+          setTimeout(() => {
+            localStorage.removeItem("clearAllNotes");
+          }, 100);
         });
       });
 
