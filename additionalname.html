@@ -53,6 +53,13 @@
       <script>
         let numRows = 5; // Set the number of rows
 
+        // Retrieve the index.html row number from the URL query parameter "row"
+        function getQueryParam(param) {
+          let params = new URLSearchParams(window.location.search);
+          return params.get(param);
+        }
+        let indexRow = getQueryParam("row") || "1";
+
         function createRow(index) {
           return `<tr>
                     <td>
@@ -142,7 +149,7 @@
           }
         }
 
-        // Save data independently per row.
+        // Save data independently per index.html row.
         function saveData() {
           for (let i = 1; i <= numRows; i++) {
             let rowData = {
@@ -150,14 +157,14 @@
               age: document.getElementById(`age${i}`).value,
               dob: document.getElementById(`dob${i}`).value
             };
-            sessionStorage.setItem("additionalname_row" + i, JSON.stringify(rowData));
+            sessionStorage.setItem("additionalname_" + indexRow + "_" + i, JSON.stringify(rowData));
           }
         }
 
-        // Load data for each row independently.
+        // Load data for each additional name row independently based on index.html row.
         function loadData() {
           for (let i = 1; i <= numRows; i++) {
-            let rowData = sessionStorage.getItem("additionalname_row" + i);
+            let rowData = sessionStorage.getItem("additionalname_" + indexRow + "_" + i);
             if (rowData) {
               rowData = JSON.parse(rowData);
               document.getElementById(`guest${i}`).value = rowData.guest || "";
