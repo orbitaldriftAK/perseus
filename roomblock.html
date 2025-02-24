@@ -224,6 +224,16 @@
     if(firstInput) {
       firstInput.focus();
     }
+    // New functionality: Check the sum of #A and #C from index.html.
+    // Assume that index.html stored this sum in localStorage as "rowACSum".
+    let rowACSum = localStorage.getItem('rowACSum');
+    if (rowACSum !== null && parseInt(rowACSum, 10) > 2) {
+      // Hide the entire ST1K row
+      let st1kRowElement = document.querySelector('.editable[data-row="1"]');
+      if (st1kRowElement) {
+        st1kRowElement.closest('tr').style.display = 'none';
+      }
+    }
   });
 
   // Function to show the custom alert modal, store the triggering element, and focus the OK button
