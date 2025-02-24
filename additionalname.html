@@ -1,129 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Additional Guest Names</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #C0C0C0;
-            text-align: center;
-            padding: 20px;
-        }
-        h2 {
-            margin-bottom: 10px;
-        }
-        .table-container {
-            display: flex;
-            justify-content: center;
-        }
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            background: white;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            border: none;
-            text-align: center;
-            font-size: 16px;
-            background: transparent;
-        }
-        input:focus {
-            outline: none;
-            background: lightyellow;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Additional Guest Names</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #C0C0C0;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .table-container {
+      display: flex;
+      justify-content: center;
+    }
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      background: white;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      border: none;
+      text-align: center;
+      font-size: 16px;
+      background: transparent;
+    }
+    input:focus {
+      outline: none;
+      background: lightyellow;
+    }
+  </style>
 </head>
 <body>
+  <h2>Additional Guest Names</h2>
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Guest Name</th>
+        <th>Age</th>
+        <th>DOB</th>
+      </tr>
+      <script>
+        let numRows = 5; // Set the number of rows
 
-    <h2>Additional Guest Names</h2>
+        function createRow(index) {
+          return `<tr>
+                    <td>
+                      <input type="text" id="guest${index}" onkeydown="navigate(event, ${index}, 'guest')">
+                    </td>
+                    <td>
+                      <input type="text" id="age${index}" readonly onkeydown="navigate(event, ${index}, 'age')">
+                    </td>
+                    <td>
+                      <input type="text" id="dob${index}" onkeydown="navigate(event, ${index}, 'dob')" oninput="formatDOBAndUpdateAge(this, ${index})">
+                    </td>
+                  </tr>`;
+        }
 
-    <div class="table-container">
-        <table>
-            <tr>
-                <th>Guest Name</th>
-                <th>Room</th>
-                <th>Building</th>
-                <th>Arrival</th>
-                <th>Departure</th>
-                <th>Status</th>
-            </tr>
-            <script>
-                let numRows = 5; // Set the number of rows
-                function createRow(index) {
-                    return `<tr>
-                        <td><input type="text" id="guest${index}" onkeydown="navigate(event, ${index}, 'guest')"></td>
-                        <td><input type="text" id="room${index}" onkeydown="navigate(event, ${index}, 'room')"></td>
-                        <td><input type="text" id="building${index}" onkeydown="navigate(event, ${index}, 'building')"></td>
-                        <td><input type="text" id="arrival${index}" onkeydown="navigate(event, ${index}, 'arrival')"></td>
-                        <td><input type="text" id="departure${index}" onkeydown="navigate(event, ${index}, 'departure')"></td>
-                        <td><input type="text" id="status${index}" onkeydown="navigate(event, ${index}, 'status')"></td>
-                    </tr>`;
-                }
-                
-                document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5));
+        document.write(createRow(1) + createRow(2) + createRow(3) + createRow(4) + createRow(5));
 
-                function navigate(event, row, field) {
-                    let fields = ["guest", "room", "building", "arrival", "departure", "status"];
-                    let currentIndex = fields.indexOf(field);
+        function navigate(event, row, field) {
+          // Define the fields in their new order: guest, age, dob.
+          let fields = ["guest", "age", "dob"];
+          let currentIndex = fields.indexOf(field);
+          
+          if (event.key === "ArrowRight" && currentIndex < fields.length - 1) {
+            event.preventDefault();
+            document.getElementById(`${fields[currentIndex + 1]}${row}`).focus();
+          } else if (event.key === "ArrowLeft" && currentIndex > 0) {
+            event.preventDefault();
+            document.getElementById(`${fields[currentIndex - 1]}${row}`).focus();
+          } else if (event.key === "Enter") {
+            event.preventDefault();
+            // If not on the last field, move right; if on last field and not on bottom row, move to first field of next row.
+            if (currentIndex < fields.length - 1) {
+              document.getElementById(`${fields[currentIndex + 1]}${row}`).focus();
+            } else if (row < numRows) {
+              document.getElementById(`guest${row + 1}`).focus();
+            }
+          } else if (event.key === "ArrowDown") {
+            event.preventDefault();
+            if (row < numRows) {
+              document.getElementById(`guest${row + 1}`).focus();
+            }
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            if (row > 1) {
+              document.getElementById(`guest${row - 1}`).focus();
+            }
+          } else if (event.key === "F4") {
+            event.preventDefault();
+            saveData();
+            window.location.href = "reservation.html";
+          }
+        }
 
-                    if (event.key === "ArrowRight" && currentIndex < fields.length - 1) {
-                        document.getElementById(`${fields[currentIndex + 1]}${row}`).focus();
-                    } else if (event.key === "ArrowLeft" && currentIndex > 0) {
-                        document.getElementById(`${fields[currentIndex - 1]}${row}`).focus();
-                    } else if (event.key === "ArrowDown" && row < numRows) {
-                        document.getElementById(`${field}${row + 1}`).focus();
-                    } else if (event.key === "ArrowUp" && row > 1) {
-                        document.getElementById(`${field}${row - 1}`).focus();
-                    } else if (event.key === "Enter") {
-                        saveData();
-                    } else if (event.key === "F4") {
-                        event.preventDefault();
-                        loadData();
-                        window.location.href = "reservation.html";
-                    }
-                }
+        function formatDOBAndUpdateAge(input, row) {
+          // Remove all non-digit characters.
+          let digits = input.value.replace(/\D/g, '');
+          if (digits.length > 8) digits = digits.slice(0, 8);
+          let formatted = digits;
+          if (digits.length > 2) {
+            formatted = digits.slice(0, 2) + '/' + digits.slice(2);
+          }
+          if (digits.length > 4) {
+            formatted = formatted.slice(0, 5) + '/' + formatted.slice(5);
+          }
+          input.value = formatted;
+          
+          // When we have a full mm/dd/yyyy (10 characters), update the Age field.
+          if (formatted.length === 10) {
+            let parts = formatted.split('/');
+            let m = parseInt(parts[0], 10);
+            let d = parseInt(parts[1], 10);
+            let y = parseInt(parts[2], 10);
+            if (!isNaN(m) && !isNaN(d) && !isNaN(y)) {
+              // Fixed current date: 02/23/2025.
+              let currentYear = 2025;
+              let currentMonth = 2;
+              let currentDay = 23;
+              let age = currentYear - y;
+              if (currentMonth < m || (currentMonth === m && currentDay < d)) {
+                age--;
+              }
+              document.getElementById(`age${row}`).value = age;
+            } else {
+              document.getElementById(`age${row}`).value = "";
+            }
+          } else {
+            document.getElementById(`age${row}`).value = "";
+          }
+        }
 
-                function saveData() {
-                    let data = [];
-                    for (let i = 1; i <= numRows; i++) {
-                        data.push({
-                            guest: document.getElementById(`guest${i}`).value,
-                            room: document.getElementById(`room${i}`).value,
-                            building: document.getElementById(`building${i}`).value,
-                            arrival: document.getElementById(`arrival${i}`).value,
-                            departure: document.getElementById(`departure${i}`).value,
-                            status: document.getElementById(`status${i}`).value
-                        });
-                    }
-                    sessionStorage.setItem("guestList", JSON.stringify(data));
-                }
+        // Save data independently per row.
+        function saveData() {
+          for (let i = 1; i <= numRows; i++) {
+            let rowData = {
+              guest: document.getElementById(`guest${i}`).value,
+              age: document.getElementById(`age${i}`).value,
+              dob: document.getElementById(`dob${i}`).value
+            };
+            sessionStorage.setItem("additionalname_row" + i, JSON.stringify(rowData));
+          }
+        }
 
-                function loadData() {
-                    let savedData = JSON.parse(sessionStorage.getItem("guestList"));
-                    if (savedData) {
-                        savedData.forEach((row, index) => {
-                            document.getElementById(`guest${index+1}`).value = row.guest;
-                            document.getElementById(`room${index+1}`).value = row.room;
-                            document.getElementById(`building${index+1}`).value = row.building;
-                            document.getElementById(`arrival${index+1}`).value = row.arrival;
-                            document.getElementById(`departure${index+1}`).value = row.departure;
-                            document.getElementById(`status${index+1}`).value = row.status;
-                        });
-                    }
-                }
+        // Load data for each row independently.
+        function loadData() {
+          for (let i = 1; i <= numRows; i++) {
+            let rowData = sessionStorage.getItem("additionalname_row" + i);
+            if (rowData) {
+              rowData = JSON.parse(rowData);
+              document.getElementById(`guest${i}`).value = rowData.guest || "";
+              document.getElementById(`age${i}`).value = rowData.age || "";
+              document.getElementById(`dob${i}`).value = rowData.dob || "";
+            }
+          }
+        }
 
-                window.onload = loadData;
-            </script>
-        </table>
-    </div>
-
+        window.onload = function() {
+          loadData();
+          // Automatically focus the first field in the first row.
+          document.getElementById("guest1").focus();
+        }
+      </script>
+    </table>
+  </div>
 </body>
 </html>
