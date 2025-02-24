@@ -91,12 +91,12 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // If clearAllNotes flag is set, clear all stored notes permanently.
+            // If clearAllNotes flag is set, clear all stored notes for all rows.
             if (localStorage.getItem("clearAllNotes") === "true" || localStorage.getItem("clearAllNotes") === "all") {
                 let keysToRemove = [];
                 for (let i = 0; i < localStorage.length; i++) {
                     let key = localStorage.key(i);
-                    if (key.startsWith("notes-")) {
+                    if (key.startsWith("notes-reservation-")) {
                         keysToRemove.push(key);
                     }
                 }
@@ -143,14 +143,18 @@
                 window.location.href = "index.html";
             });
 
+            // Determine the row identifier from the stored row number.
+            // This key ensures each row's notes are independent.
+            let rowIndex = localStorage.getItem("lastReservationRow") || "default";
+
             const notesBox = document.getElementById("notesBox");
             const notesPopup = document.getElementById("notesPopup");
             const notesArea = document.getElementById("notesArea");
             const notesOkBtn = document.getElementById("notesOkBtn");
 
-            // Notes are now stored using a constant key rather than being tied to Guest Name.
+            // Use a unique key per row (ignoring Guest Name) for storing notes.
             function loadNotesIndicator() {
-                let savedNotes = localStorage.getItem("notes-reservation");
+                let savedNotes = localStorage.getItem("notes-reservation-" + rowIndex);
                 notesBox.value = (savedNotes && savedNotes.trim()) ? "X" : "";
             }
 
@@ -164,14 +168,14 @@
             notesBox.addEventListener("keydown", function (event) {
                 if (event.key === "F5") {
                     event.preventDefault();
-                    notesArea.value = localStorage.getItem("notes-reservation") || "";
+                    notesArea.value = localStorage.getItem("notes-reservation-" + rowIndex) || "";
                     notesPopup.style.display = "block";
                     notesArea.focus();
                 }
             });
 
             notesOkBtn.addEventListener("click", function () {
-                localStorage.setItem("notes-reservation", notesArea.value);
+                localStorage.setItem("notes-reservation-" + rowIndex, notesArea.value);
                 notesPopup.style.display = "none";
                 loadNotesIndicator();
             });
@@ -182,13 +186,13 @@
                 }
             });
 
-            // When the Clear button in index.html is pressed, clear all stored notes.
+            // Listen for storage events to clear notes when Clear is pressed.
             window.addEventListener("storage", function(event) {
                 if (event.key === "clearAllNotes" && (event.newValue === "true" || event.newValue === "all")) {
                     let keysToRemove = [];
                     for (let i = 0; i < localStorage.length; i++) {
                         let key = localStorage.key(i);
-                        if (key.startsWith("notes-")) {
+                        if (key.startsWith("notes-reservation-")) {
                             keysToRemove.push(key);
                         }
                     }
