@@ -175,6 +175,14 @@
                     localStorage.removeItem("clearAllNotes");
                 }
             });
+
+            // If the clearAllNotes flag is set on page load, clear notes immediately.
+            if (localStorage.getItem("clearAllNotes") === "true") {
+                localStorage.removeItem("notes-" + guestName);
+                notesBox.value = "";
+                notesArea.value = "";
+                localStorage.removeItem("clearAllNotes");
+            }
         });
     </script>
 </head>
