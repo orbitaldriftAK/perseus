@@ -212,23 +212,29 @@
         if(roomType === "Suite") {
           alert("Not Enough Inventory Available");
         } else {
-          // Determine the localStorage key based on room type
-          let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
-          // Retrieve current availability, subtract 1, and update
-          let currentAvail = parseInt(localStorage.getItem(availKey), 10);
-          currentAvail = currentAvail - 1;
-          localStorage.setItem(availKey, currentAvail);
-          // Update both input boxes in the corresponding row with the new availability
-          let rowIndex = (roomType === "ST2Q") ? "0" : "1";
-          document.querySelectorAll(`.editable[data-row="${rowIndex}"]`).forEach(function(input) {
-            input.value = currentAvail;
-          });
-          // Save exactly the room type under the key "selectedRoomType"
-          localStorage.setItem('selectedRoomType', roomType);
-          // Show confirmation alert
-          alert("Successfully saved Room Type: " + roomType);
-          // Navigate back to index.html
-          window.location.href = "index.html";
+          // New validation: Check the current displayed number in the focused box
+          let currentBoxValue = parseInt(this.value, 10);
+          if(currentBoxValue === 0) {
+            alert("Not Enough Inventory Available");
+          } else {
+            // Determine the localStorage key based on room type
+            let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
+            // Retrieve current availability, subtract 1, and update
+            let currentAvail = parseInt(localStorage.getItem(availKey), 10);
+            currentAvail = currentAvail - 1;
+            localStorage.setItem(availKey, currentAvail);
+            // Update both input boxes in the corresponding row with the new availability
+            let rowIndex = (roomType === "ST2Q") ? "0" : "1";
+            document.querySelectorAll(`.editable[data-row="${rowIndex}"]`).forEach(function(input) {
+              input.value = currentAvail;
+            });
+            // Save exactly the room type under the key "selectedRoomType"
+            localStorage.setItem('selectedRoomType', roomType);
+            // Show confirmation alert
+            alert("Successfully saved Room Type: " + roomType);
+            // Navigate back to index.html
+            window.location.href = "index.html";
+          }
         }
         e.preventDefault();
       }
