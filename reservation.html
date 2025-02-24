@@ -133,12 +133,21 @@
             const notesArea = document.getElementById("notesArea");
             const notesOkBtn = document.getElementById("notesOkBtn");
 
+            // Helper function to always get the current guest name from the input field.
+            function getGuestName() {
+                return document.getElementById("guestName").value.trim();
+            }
+
+            // Update the notes indicator based on the current guest name.
             function loadNotesIndicator() {
-                let savedNotes = localStorage.getItem("notes-" + guestName);
+                let savedNotes = localStorage.getItem("notes-" + getGuestName());
                 notesBox.value = (savedNotes && savedNotes.trim()) ? "X" : "";
             }
 
             loadNotesIndicator();
+
+            // Update the indicator as the guest name is changed.
+            document.getElementById("guestName").addEventListener("input", loadNotesIndicator);
 
             notesBox.addEventListener("click", function () {
                 notesBox.style.backgroundColor = "#D0E8FF";
@@ -148,14 +157,16 @@
             notesBox.addEventListener("keydown", function (event) {
                 if (event.key === "F5") {
                     event.preventDefault();
-                    notesArea.value = localStorage.getItem("notes-" + guestName) || "";
+                    // Use the current guest name to load notes.
+                    notesArea.value = localStorage.getItem("notes-" + getGuestName()) || "";
                     notesPopup.style.display = "block";
                     notesArea.focus();
                 }
             });
 
             notesOkBtn.addEventListener("click", function () {
-                localStorage.setItem("notes-" + guestName, notesArea.value);
+                // Save notes using the current guest name.
+                localStorage.setItem("notes-" + getGuestName(), notesArea.value);
                 notesPopup.style.display = "none";
                 loadNotesIndicator();
             });
