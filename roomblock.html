@@ -195,6 +195,9 @@
 </div>
 
 <script>
+  // Global variable to store the element that was focused before the modal opened
+  let lastFocusedInput = null;
+
   // On page load, set up room availability values from localStorage (or defaults)
   window.addEventListener('DOMContentLoaded', function() {
     // Retrieve current availability from localStorage or set defaults if missing
@@ -223,8 +226,9 @@
     }
   });
 
-  // Function to show the custom alert modal and focus the OK button automatically
-  function showCustomAlert() {
+  // Function to show the custom alert modal, store the triggering element, and focus the OK button
+  function showCustomAlert(triggerElement) {
+    lastFocusedInput = triggerElement;
     const modal = document.getElementById('custom-alert');
     modal.style.display = 'block';
     const okButton = document.getElementById('custom-alert-ok');
@@ -232,11 +236,16 @@
   }
 
   // Attach event listener to the OK button in the custom alert modal
-  document.getElementById('custom-alert-ok').addEventListener('click', function() {
+  const customOkButton = document.getElementById('custom-alert-ok');
+  customOkButton.addEventListener('click', function() {
     document.getElementById('custom-alert').style.display = 'none';
+    // Return focus to the element that triggered the modal
+    if (lastFocusedInput) {
+      lastFocusedInput.focus();
+    }
   });
   // When the OK button is focused, pressing Enter will activate it
-  document.getElementById('custom-alert-ok').addEventListener('keydown', function(e) {
+  customOkButton.addEventListener('keydown', function(e) {
     if(e.key === 'Enter') {
       this.click();
     }
@@ -254,12 +263,12 @@
         let roomType = this.closest('tr').firstElementChild.textContent.trim();
         // If the row is Suite, show custom alert and do nothing else
         if(roomType === "Suite") {
-          showCustomAlert();
+          showCustomAlert(this);
         } else {
           // New validation: Check the current displayed number in the focused box
           let currentBoxValue = parseInt(this.value, 10);
           if(currentBoxValue === 0) {
-            showCustomAlert();
+            showCustomAlert(this);
           } else {
             // Determine the localStorage key based on room type
             let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
