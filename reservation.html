@@ -169,16 +169,35 @@
             // CLEAR NOTES WHEN INDEX.HTML CLEAR BUTTON PRESSED
             window.addEventListener("storage", function(event) {
                 if (event.key === "clearAllNotes" && event.newValue === "true") {
-                    localStorage.removeItem("notes-" + guestName);
+                    // Clear all saved notes for every row
+                    let keysToRemove = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        let key = localStorage.key(i);
+                        if (key.startsWith("notes-")) {
+                            keysToRemove.push(key);
+                        }
+                    }
+                    keysToRemove.forEach(function(key) {
+                        localStorage.removeItem(key);
+                    });
                     notesBox.value = "";
                     notesArea.value = "";
                     localStorage.removeItem("clearAllNotes");
                 }
             });
 
-            // If the clearAllNotes flag is set on page load, clear notes immediately.
+            // If the clearAllNotes flag is set on page load, clear notes immediately for all rows.
             if (localStorage.getItem("clearAllNotes") === "true") {
-                localStorage.removeItem("notes-" + guestName);
+                let keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    let key = localStorage.key(i);
+                    if (key.startsWith("notes-")) {
+                        keysToRemove.push(key);
+                    }
+                }
+                keysToRemove.forEach(function(key) {
+                    localStorage.removeItem(key);
+                });
                 notesBox.value = "";
                 notesArea.value = "";
                 localStorage.removeItem("clearAllNotes");
