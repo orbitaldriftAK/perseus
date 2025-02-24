@@ -190,7 +190,7 @@
           let storedRoomType = localStorage.getItem("selectedRoomType");
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
-            alert("Successfully loaded Room Type: " + storedRoomType + " into the correct row.");
+            // Removed the pop-up notification as requested.
             // After loading, focus on the Guest Name field of the row below.
             let nextRow = parseInt(currentlyEditingRow) + 1;
             if (document.getElementById("guest" + nextRow)) {
