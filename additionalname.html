@@ -51,14 +51,12 @@
         <th>DOB</th>
       </tr>
       <script>
-        let numRows = 5; // Set the number of rows
+        let numRows = 5; // Set the number of additional guest rows
 
-        // Retrieve the index.html row number from the URL query parameter "row"
-        function getQueryParam(param) {
-          let params = new URLSearchParams(window.location.search);
-          return params.get(param);
-        }
-        let indexRow = getQueryParam("row") || "1";
+        // Generate a unique identifier for the index.html row.
+        // This uniqueRowId is taken from the URL query parameter "row".
+        // If not provided, it defaults to a unique string ("unique_default_row").
+        const uniqueRowId = (new URLSearchParams(window.location.search)).get("row") || "unique_default_row";
 
         function createRow(index) {
           return `<tr>
@@ -149,7 +147,7 @@
           }
         }
 
-        // Save data independently per index.html row.
+        // Save data for each additional guest row using a key that includes the uniqueRowId.
         function saveData() {
           for (let i = 1; i <= numRows; i++) {
             let rowData = {
@@ -157,14 +155,14 @@
               age: document.getElementById(`age${i}`).value,
               dob: document.getElementById(`dob${i}`).value
             };
-            sessionStorage.setItem("additionalname_" + indexRow + "_" + i, JSON.stringify(rowData));
+            sessionStorage.setItem("additionalname_" + uniqueRowId + "_" + i, JSON.stringify(rowData));
           }
         }
 
-        // Load data for each additional name row independently based on index.html row.
+        // Load data for each additional guest row using the uniqueRowId.
         function loadData() {
           for (let i = 1; i <= numRows; i++) {
-            let rowData = sessionStorage.getItem("additionalname_" + indexRow + "_" + i);
+            let rowData = sessionStorage.getItem("additionalname_" + uniqueRowId + "_" + i);
             if (rowData) {
               rowData = JSON.parse(rowData);
               document.getElementById(`guest${i}`).value = rowData.guest || "";
