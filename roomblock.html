@@ -4,24 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Room Type Rate Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #C0C0C0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #2c2f33 0%, #1e262b 100%);
+      color: #d1d1d1;
+      margin: 0;
       padding: 20px;
     }
     .container {
       width: 900px;
-      background-color: #F5F5F5;
+      background-color: rgba(44, 47, 51, 0.85);
       padding: 20px;
       border-radius: 5px;
-      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      margin: 0 auto;
+    }
+    h2 {
+      font-size: 2.5em;
+      text-align: center;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #004c4c, #5a6f7b, #39ff14);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 16px;
+      font-size: 1em;
       font-weight: bold;
       margin-bottom: 10px;
     }
@@ -32,49 +44,55 @@
     }
     button {
       padding: 8px 12px;
-      border: none;
-      background-color: #007BFF;
-      color: white;
+      border: 2px solid #39ff14;
+      background-color: #013220;
+      color: #39ff14;
       border-radius: 5px;
       cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #024731;
     }
-    .rate-grid {
+    table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
     }
-    .rate-grid th, .rate-grid td {
-      border: 1px solid black;
-      padding: 5px;
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
       text-align: center;
+      background-color: rgba(44, 47, 51, 0.85);
     }
-    .rate-grid th {
-      background-color: #D3D3D3;
+    input {
+      width: 100%;
+      border: none;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      background-color: rgba(44, 47, 51, 0.9);
+      color: #d1d1d1;
+      padding: 4px;
+      border-radius: 3px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.7);
+    }
+    input:focus {
+      outline: 2px solid #39ff14;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     .input-box {
       width: 40px;
       text-align: center;
     }
-    /* Remove spinner arrows for number inputs */
-    input[type=number]::-webkit-outer-spin-button,
-    input[type=number]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
     .footer-buttons {
       display: flex;
       justify-content: space-between;
       margin-top: 15px;
-    }
-    /* Highlight editable cells on focus */
-    .input-box.editable:focus {
-      outline: 2px solid blue;
     }
     /* Custom modal for "Not Enough Inventory Available" */
     #custom-alert {
@@ -83,266 +101,273 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: white;
-      border: 2px solid black;
+      background: rgba(44,47,51,0.9);
+      border: 2px solid #444;
       padding: 20px;
       z-index: 10000;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       text-align: center;
+      color: #d1d1d1;
+      font-family: 'Orbitron', sans-serif;
     }
     #custom-alert button {
       margin-top: 10px;
       padding: 5px 10px;
+      border: 2px solid #39ff14;
+      background-color: #013220;
+      color: #39ff14;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+    }
+    #custom-alert button:hover {
+      background-color: #024731;
     }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="header">
-    <div>Date: <input type="date" value="2025-03-01"></div>
-    <div>ID: <input type="text" placeholder="ID"></div>
+  <div class="container">
+    <h2>Room Type Rate Grid</h2>
+    <div class="header">
+      <div>Date: <input type="date" value="2025-03-01"></div>
+      <div>ID: <input type="text" placeholder="ID"></div>
+    </div>
+    <div class="button-bar">
+      <button>New Guest Reservation</button>
+      <button>New Group/Function</button>
+      <button>View Availability</button>
+      <button>Print Rate Chart</button>
+    </div>
+    <table class="rate-grid">
+      <tr>
+        <th>Room Type</th>
+        <th>Sat-Mar 1</th>
+        <th>Sun-Mar 2</th>
+        <th>Mon-Mar 3</th>
+        <th>Tue-Mar 4</th>
+        <th>Wed-Mar 5</th>
+        <th>Thu-Mar 6</th>
+        <th>Fri-Mar 7</th>
+        <th>Sat-Mar 8</th>
+        <th>Sun-Mar 9</th>
+        <th>Mon-Mar 10</th>
+      </tr>
+      <tr style="background-color: #e0e0e0;">
+        <td>ST2Q</td>
+        <!-- ST2Q row: first two columns -->
+        <td>
+          <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
+        </td>
+        <td>
+          <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="1">
+        </td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+      </tr>
+      <tr style="background-color: #e0e0e0;">
+        <td>ST1K</td>
+        <!-- ST1K row: first two columns -->
+        <td>
+          <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
+        </td>
+        <td>
+          <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="1">
+        </td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+      </tr>
+      <tr style="background-color: #e0e0e0;">
+        <td>Suite</td>
+        <!-- Suite row: first two columns are now focusable (not greyed out), but readonly and blank -->
+        <td>
+          <input type="number" readonly class="input-box editable" data-row="2" data-col="0">
+        </td>
+        <td>
+          <input type="number" readonly class="input-box editable" data-row="2" data-col="1">
+        </td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+        <td><input type="text" class="input-box" value="---" disabled></td>
+      </tr>
+    </table>
+    <div class="footer-buttons">
+      <button>Previous</button>
+      <button>Next</button>
+      <button>Save</button>
+    </div>
   </div>
 
-  <div class="button-bar">
-    <button>New Guest Reservation</button>
-    <button>New Group/Function</button>
-    <button>View Availability</button>
-    <button>Print Rate Chart</button>
+  <!-- Custom modal for "Not Enough Inventory Available" -->
+  <div id="custom-alert">
+    <p>Not Enough Inventory Available</p>
+    <button id="custom-alert-ok">OK</button>
   </div>
 
-  <table class="rate-grid">
-    <tr>
-      <th>Room Type</th>
-      <th>Sat-Mar 1</th>
-      <th>Sun-Mar 2</th>
-      <th>Mon-Mar 3</th>
-      <th>Tue-Mar 4</th>
-      <th>Wed-Mar 5</th>
-      <th>Thu-Mar 6</th>
-      <th>Fri-Mar 7</th>
-      <th>Sat-Mar 8</th>
-      <th>Sun-Mar 9</th>
-      <th>Mon-Mar 10</th>
-    </tr>
-    <tr style="background-color: #e0e0e0;">
-      <td>ST2Q</td>
-      <!-- ST2Q row: first two columns -->
-      <td>
-        <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="0">
-      </td>
-      <td>
-        <input type="number" readonly class="input-box editable" value="8" data-row="0" data-col="1">
-      </td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-    </tr>
-    <tr style="background-color: #e0e0e0;">
-      <td>ST1K</td>
-      <!-- ST1K row: first two columns -->
-      <td>
-        <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="0">
-      </td>
-      <td>
-        <input type="number" readonly class="input-box editable" value="2" data-row="1" data-col="1">
-      </td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-    </tr>
-    <tr style="background-color: #e0e0e0;">
-      <td>Suite</td>
-      <!-- Suite row: first two columns are now focusable (not greyed out), but readonly and blank -->
-      <td>
-        <input type="number" readonly class="input-box editable" data-row="2" data-col="0">
-      </td>
-      <td>
-        <input type="number" readonly class="input-box editable" data-row="2" data-col="1">
-      </td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-      <td><input type="text" class="input-box" value="---" disabled></td>
-    </tr>
-  </table>
+  <script>
+    // Global variable to store the element that was focused before the modal opened
+    let lastFocusedInput = null;
 
-  <div class="footer-buttons">
-    <button>Previous</button>
-    <button>Next</button>
-    <button>Save</button>
-  </div>
-</div>
-
-<!-- Custom modal for "Not Enough Inventory Available" -->
-<div id="custom-alert">
-  <p>Not Enough Inventory Available</p>
-  <button id="custom-alert-ok">OK</button>
-</div>
-
-<script>
-  // Global variable to store the element that was focused before the modal opened
-  let lastFocusedInput = null;
-
-  // On page load, set up room availability values from localStorage (or defaults)
-  window.addEventListener('DOMContentLoaded', function() {
-    // Retrieve current availability from localStorage or set defaults if missing
-    let st2qAvail = localStorage.getItem('ST2Q_availability');
-    let st1kAvail = localStorage.getItem('ST1K_availability');
-    if (st2qAvail === null) {
-      st2qAvail = 8;
-      localStorage.setItem('ST2Q_availability', st2qAvail);
-    }
-    if (st1kAvail === null) {
-      st1kAvail = 2;
-      localStorage.setItem('ST1K_availability', st1kAvail);
-    }
-    // Update the ST2Q row (data-row="0") input boxes
-    document.querySelectorAll('.editable[data-row="0"]').forEach(function(input) {
-      input.value = st2qAvail;
-    });
-    // Update the ST1K row (data-row="1") input boxes
-    document.querySelectorAll('.editable[data-row="1"]').forEach(function(input) {
-      input.value = st1kAvail;
-    });
-    // Focus the first box in the Sat-Mar 1 column and ST2Q row
-    let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
-    if(firstInput) {
-      firstInput.focus();
-    }
-    // New functionality: Check the sum of #A and #C from index.html.
-    // Assume that index.html stored this sum in localStorage as "rowACSum".
-    let rowACSum = localStorage.getItem('rowACSum');
-    if (rowACSum !== null && parseInt(rowACSum, 10) > 2) {
-      // Hide the entire ST1K row
-      let st1kRowElement = document.querySelector('.editable[data-row="1"]');
-      if (st1kRowElement) {
-        st1kRowElement.closest('tr').style.display = 'none';
+    // On page load, set up room availability values from localStorage (or defaults)
+    window.addEventListener('DOMContentLoaded', function() {
+      // Retrieve current availability from localStorage or set defaults if missing
+      let st2qAvail = localStorage.getItem('ST2Q_availability');
+      let st1kAvail = localStorage.getItem('ST1K_availability');
+      if (st2qAvail === null) {
+        st2qAvail = 8;
+        localStorage.setItem('ST2Q_availability', st2qAvail);
       }
-    }
-  });
-
-  // Function to show the custom alert modal, store the triggering element, and focus the OK button
-  function showCustomAlert(triggerElement) {
-    lastFocusedInput = triggerElement;
-    const modal = document.getElementById('custom-alert');
-    modal.style.display = 'block';
-    const okButton = document.getElementById('custom-alert-ok');
-    okButton.focus();
-  }
-
-  // Attach event listener to the OK button in the custom alert modal
-  const customOkButton = document.getElementById('custom-alert-ok');
-  customOkButton.addEventListener('click', function() {
-    document.getElementById('custom-alert').style.display = 'none';
-    // Return focus to the element that triggered the modal
-    if (lastFocusedInput) {
-      lastFocusedInput.focus();
-    }
-  });
-  // When the OK button is focused, pressing Enter will activate it
-  customOkButton.addEventListener('keydown', function(e) {
-    if(e.key === 'Enter') {
-      this.click();
-    }
-  });
-
-  // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
-  document.querySelectorAll('.editable').forEach(input => {
-    input.addEventListener('keydown', function(e) {
-      const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
-      if (!allowedKeys.includes(e.key)) {
-        e.preventDefault();
+      if (st1kAvail === null) {
+        st1kAvail = 2;
+        localStorage.setItem('ST1K_availability', st1kAvail);
       }
+      // Update the ST2Q row (data-row="0") input boxes
+      document.querySelectorAll('.editable[data-row="0"]').forEach(function(input) {
+        input.value = st2qAvail;
+      });
+      // Update the ST1K row (data-row="1") input boxes
+      document.querySelectorAll('.editable[data-row="1"]').forEach(function(input) {
+        input.value = st1kAvail;
+      });
+      // Focus the first box in the Sat-Mar 1 column and ST2Q row
+      let firstInput = document.querySelector('.editable[data-row="0"][data-col="0"]');
+      if(firstInput) {
+        firstInput.focus();
+      }
+      // New functionality: Check the sum of #A and #C from index.html.
+      // Assume that index.html stored this sum in localStorage as "rowACSum".
+      let rowACSum = localStorage.getItem('rowACSum');
+      if (rowACSum !== null && parseInt(rowACSum, 10) > 2) {
+        // Hide the entire ST1K row
+        let st1kRowElement = document.querySelector('.editable[data-row="1"]');
+        if (st1kRowElement) {
+          st1kRowElement.closest('tr').style.display = 'none';
+        }
+      }
+    });
+
+    // Function to show the custom alert modal, store the triggering element, and focus the OK button
+    function showCustomAlert(triggerElement) {
+      lastFocusedInput = triggerElement;
+      const modal = document.getElementById('custom-alert');
+      modal.style.display = 'block';
+      const okButton = document.getElementById('custom-alert-ok');
+      okButton.focus();
+    }
+
+    // Attach event listener to the OK button in the custom alert modal
+    const customOkButton = document.getElementById('custom-alert-ok');
+    customOkButton.addEventListener('click', function() {
+      document.getElementById('custom-alert').style.display = 'none';
+      // Return focus to the element that triggered the modal
+      if (lastFocusedInput) {
+        lastFocusedInput.focus();
+      }
+    });
+    // When the OK button is focused, pressing Enter will activate it
+    customOkButton.addEventListener('keydown', function(e) {
       if(e.key === 'Enter') {
-        // Retrieve the room type text from the first cell of the corresponding row
-        let roomType = this.closest('tr').firstElementChild.textContent.trim();
-        // If the row is Suite, show custom alert and do nothing else
-        if(roomType === "Suite") {
-          showCustomAlert(this);
-        } else {
-          // New validation: Check the current displayed number in the focused box
-          let currentBoxValue = parseInt(this.value, 10);
-          if(currentBoxValue === 0) {
+        this.click();
+      }
+    });
+
+    // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
+    document.querySelectorAll('.editable').forEach(input => {
+      input.addEventListener('keydown', function(e) {
+        const allowedKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter'];
+        if (!allowedKeys.includes(e.key)) {
+          e.preventDefault();
+        }
+        if(e.key === 'Enter') {
+          // Retrieve the room type text from the first cell of the corresponding row
+          let roomType = this.closest('tr').firstElementChild.textContent.trim();
+          // If the row is Suite, show custom alert and do nothing else
+          if(roomType === "Suite") {
             showCustomAlert(this);
           } else {
-            // Determine the localStorage key based on room type
-            let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
-            // Retrieve current availability, subtract 1, and update
-            let currentAvail = parseInt(localStorage.getItem(availKey), 10);
-            currentAvail = currentAvail - 1;
-            localStorage.setItem(availKey, currentAvail);
-            // Update both input boxes in the corresponding row with the new availability
-            let rowIndex = (roomType === "ST2Q") ? "0" : "1";
-            document.querySelectorAll(`.editable[data-row="${rowIndex}"]`).forEach(function(input) {
-              input.value = currentAvail;
-            });
-            // Save exactly the room type under the key "selectedRoomType"
-            localStorage.setItem('selectedRoomType', roomType);
-            // (No confirmation pop-up here)
-            window.location.href = "index.html";
+            // New validation: Check the current displayed number in the focused box
+            let currentBoxValue = parseInt(this.value, 10);
+            if(currentBoxValue === 0) {
+              showCustomAlert(this);
+            } else {
+              // Determine the localStorage key based on room type
+              let availKey = (roomType === "ST2Q") ? 'ST2Q_availability' : 'ST1K_availability';
+              // Retrieve current availability, subtract 1, and update
+              let currentAvail = parseInt(localStorage.getItem(availKey), 10);
+              currentAvail = currentAvail - 1;
+              localStorage.setItem(availKey, currentAvail);
+              // Update both input boxes in the corresponding row with the new availability
+              let rowIndex = (roomType === "ST2Q") ? "0" : "1";
+              document.querySelectorAll(`.editable[data-row="${rowIndex}"]`).forEach(function(input) {
+                input.value = currentAvail;
+              });
+              // Save exactly the room type under the key "selectedRoomType"
+              localStorage.setItem('selectedRoomType', roomType);
+              // (No confirmation pop-up here)
+              window.location.href = "index.html";
+            }
           }
+          e.preventDefault();
         }
-        e.preventDefault();
-      }
-      if(e.key.startsWith('Arrow')) {
-        e.preventDefault();
-        navigateEditable(this, e.key);
-      }
+        if(e.key.startsWith('Arrow')) {
+          e.preventDefault();
+          navigateEditable(this, e.key);
+        }
+      });
     });
-  });
 
-  // Navigation between editable cells using arrow keys.
-  // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
-  function navigateEditable(current, key) {
-    let row = parseInt(current.dataset.row, 10);
-    let col = parseInt(current.dataset.col, 10);
-    let newRow = row;
-    let newCol = col;
-    if (key === 'ArrowRight') {
-      if (col < 1) {
-        newCol = col + 1;
-      } else if (col === 1 && row < 2) {
-        newRow = row + 1;
-        newCol = 0;
+    // Navigation between editable cells using arrow keys.
+    // Uses data-row (0-indexed for each row) and data-col (0 for Sat-Mar 1, 1 for Sun-Mar 2)
+    function navigateEditable(current, key) {
+      let row = parseInt(current.dataset.row, 10);
+      let col = parseInt(current.dataset.col, 10);
+      let newRow = row;
+      let newCol = col;
+      if (key === 'ArrowRight') {
+        if (col < 1) {
+          newCol = col + 1;
+        } else if (col === 1 && row < 2) {
+          newRow = row + 1;
+          newCol = 0;
+        }
+      } else if (key === 'ArrowLeft') {
+        if (col > 0) {
+          newCol = col - 1;
+        } else if (col === 0 && row > 0) {
+          newRow = row - 1;
+          newCol = 1;
+        }
+      } else if (key === 'ArrowDown') {
+        if (row < 2) {
+          newRow = row + 1;
+        }
+      } else if (key === 'ArrowUp') {
+        if (row > 0) {
+          newRow = row - 1;
+        }
       }
-    } else if (key === 'ArrowLeft') {
-      if (col > 0) {
-        newCol = col - 1;
-      } else if (col === 0 && row > 0) {
-        newRow = row - 1;
-        newCol = 1;
-      }
-    } else if (key === 'ArrowDown') {
-      if (row < 2) {
-        newRow = row + 1;
-      }
-    } else if (key === 'ArrowUp') {
-      if (row > 0) {
-        newRow = row - 1;
+      let selector = `.editable[data-row="${newRow}"][data-col="${newCol}"]`;
+      let nextInput = document.querySelector(selector);
+      if (nextInput) {
+        nextInput.focus();
       }
     }
-    let selector = `.editable[data-row="${newRow}"][data-col="${newCol}"]`;
-    let nextInput = document.querySelector(selector);
-    if (nextInput) {
-      nextInput.focus();
-    }
-  }
-</script>
-
+  </script>
 </body>
 </html>
