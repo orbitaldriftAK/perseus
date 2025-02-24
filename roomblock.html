@@ -223,15 +223,23 @@
     }
   });
 
-  // Function to show the custom alert modal
+  // Function to show the custom alert modal and focus the OK button automatically
   function showCustomAlert() {
     const modal = document.getElementById('custom-alert');
     modal.style.display = 'block';
+    const okButton = document.getElementById('custom-alert-ok');
+    okButton.focus();
   }
 
   // Attach event listener to the OK button in the custom alert modal
   document.getElementById('custom-alert-ok').addEventListener('click', function() {
     document.getElementById('custom-alert').style.display = 'none';
+  });
+  // When the OK button is focused, pressing Enter will activate it
+  document.getElementById('custom-alert-ok').addEventListener('keydown', function(e) {
+    if(e.key === 'Enter') {
+      this.click();
+    }
   });
 
   // Attach event listeners to all editable inputs in the Sat-Mar 1 and Sun-Mar 2 columns
