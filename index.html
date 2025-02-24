@@ -3,12 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rooming List</title>
+  <title>Perseus</title>
+  <!-- Import a futuristic font (Orbitron) from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid black; padding: 8px; text-align: center; }
-    input { width: 100%; border: none; text-align: center; }
-    input:focus { outline: none; }
+    /* Apply futuristic font and cohesive color scheme */
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #2c2f33; /* Dark grey background */
+      color: #d1d1d1; /* Light grey text for legibility */
+    }
+    h2 {
+      font-size: 3em;
+      text-align: center;
+      margin-top: 20px;
+      /* Blend dark teal and blue-grey */
+      background: linear-gradient(90deg, #004c4c, #5a6f7b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #444; /* Use charcoal border */
+      padding: 8px;
+      text-align: center;
+      color: #d1d1d1;
+    }
+    input {
+      width: 100%;
+      border: none;
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #2c2f33;
+      color: #d1d1d1;
+    }
+    input:focus {
+      outline: 2px solid #39ff14; /* Neon green highlight */
+    }
     /* Remove increment/decrement arrows from number inputs */
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
@@ -20,11 +55,13 @@
     }
     /* Style for the non-editable text box-like fields */
     .readonly-field {
-      border: 1px solid black;
+      border: 1px solid #444;
       padding: 4px;
       text-align: center;
-      background-color: #f0f0f0;
+      background-color: #2c2f33;
       display: inline-block;
+      color: #d1d1d1;
+      font-family: 'Orbitron', sans-serif;
     }
     /* Style for the Clear button */
     #clearButton {
@@ -33,11 +70,18 @@
       padding: 8px 12px;
       font-size: 1em;
       cursor: pointer;
+      background-color: #004c4c;
+      color: #d1d1d1;
+      border: none;
+      border-radius: 3px;
+    }
+    #clearButton:hover {
+      background-color: #003333;
     }
   </style>
 </head>
 <body>
-  <h2>Rooming List</h2>
+  <h2>Perseus</h2>
   <div style="margin-bottom: 20px;">
     <input type="text" class="readonly-field" readonly value="Sample Group Name Mar 25" style="margin: 10px auto; width: 400px; display: block; font-size: 1.2em;">
     <div style="display: flex; align-items: center;">
@@ -101,7 +145,6 @@
       function validateRoomType(event, index) {
         if (event.key === "F5") {
           event.preventDefault();
-          // Save the currently editing row identifier to localStorage
           localStorage.setItem("currentlyEditingRow", index);
           window.location.href = "roomblock.html";
           return;
@@ -130,9 +173,7 @@
             let adultCount = document.getElementById(`adults${rowIndex}`).value;
             let childCount = document.getElementById(`children${rowIndex}`).value;
             
-            // Save entire table data so that Room Type persists upon return from reservation.html
             localStorage.setItem("savedData", JSON.stringify(getTableData()));
-            // Save the current row for focus after return from reservation.html
             localStorage.setItem("lastReservationRow", rowIndex);
             
             sessionStorage.setItem('guestName', guestName);
@@ -184,14 +225,12 @@
 
       window.onload = () => {
         loadTableData();
-        // Check if returning from roomblock.html:
         let currentlyEditingRow = localStorage.getItem("currentlyEditingRow");
         if (currentlyEditingRow) {
           let storedRoomType = localStorage.getItem("selectedRoomType");
           if (storedRoomType && document.getElementById("roomType" + currentlyEditingRow)) {
             document.getElementById("roomType" + currentlyEditingRow).value = storedRoomType;
-            // Removed the pop-up notification as requested.
-            // After loading, focus on the Guest Name field of the row below.
+            // No pop-up notification as per request.
             let nextRow = parseInt(currentlyEditingRow) + 1;
             if (document.getElementById("guest" + nextRow)) {
               document.getElementById("guest" + nextRow).focus();
@@ -200,7 +239,6 @@
           localStorage.removeItem("currentlyEditingRow");
           localStorage.removeItem("selectedRoomType");
         }
-        // Check if returning from reservation.html:
         let lastResRow = localStorage.getItem("lastReservationRow");
         if (lastResRow) {
           let nextRow = parseInt(lastResRow) + 1;
@@ -224,10 +262,8 @@
             document.getElementById("children" + i).value = "";
           }
           localStorage.removeItem("savedData");
-          // Reset room availability numbers in roomblock.html to their original values.
           localStorage.setItem("ST2Q_availability", 8);
           localStorage.setItem("ST1K_availability", 2);
-          // Signal reservation.html to permanently clear all notes for ALL rows.
           localStorage.setItem("clearAllNotes", "all");
           setTimeout(() => {
             localStorage.removeItem("clearAllNotes");
@@ -238,28 +274,23 @@
       function OnEnter(event, index, nextFieldId) {
         if (event.key === "Enter") {
           event.preventDefault();
-          // If Enter is pressed on the #C (children) field:
           if (event.target.id.startsWith("children")) {
             let rowIndex = event.target.id.match(/\d+/)[0];
-            // Only navigate to roomblock.html if Room Type is empty.
             if (document.getElementById("roomType" + rowIndex).value.trim() === "") {
               localStorage.setItem("savedData", JSON.stringify(getTableData()));
               localStorage.setItem("currentlyEditingRow", index);
               window.location.href = "roomblock.html";
               return;
             } else {
-              // If Room Type is populated, move focus to next row's Guest Name field.
               if (index < 10) {
                 document.getElementById("guest" + (index + 1)).focus();
               }
               return;
             }
           }
-          // If Enter is pressed on a Guest Name field with no text, do nothing.
           if (event.target.id.startsWith("guest") && event.target.value.trim() === "") {
             return;
           }
-          // If Enter is pressed on a Guest Name field with text, auto-capitalize and autofill dates.
           if (event.target.id.startsWith("guest")) {
             let rowIndex = event.target.id.match(/\d+/)[0];
             let nameParts = event.target.value.split(" ");
@@ -272,7 +303,6 @@
             document.getElementById("checkin" + rowIndex).value = "2025-03-01";
             document.getElementById("checkout" + rowIndex).value = "2025-03-03";
           }
-          // Restore navigation functionality.
           if (nextFieldId === "roomType") {
             document.getElementById("roomType" + index).focus();
           } else if (nextFieldId === "guest" && index < 10) {
